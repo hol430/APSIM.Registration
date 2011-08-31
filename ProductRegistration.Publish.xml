@@ -1,17 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
   <publishProfile publishUrl="ftp://www.apsim.info/ProductRegistration" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FTP" replaceMatchingFiles="True" userName="apsrunet" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAUVduxTngvk+aQlw2EVcpowAAAAACAAAAAAADZgAAwAAAABAAAADNAI7KpEOK3dQfJGkL5HiOAAAAAASAAACgAAAAEAAAAPC1jUaycPF7hybkhdipA2wYAAAALLW9BhgZUzhSFC327fabu1LmwsTfm4eQFAAAACiKUzfbXjUzxS56vQvpHgpxHSRk" SelectedForPublish="True">
-    <file relUrl="APSIMDisclaimer.html" publishTime="08/23/2011 12:45:44" />
-    <file relUrl="Registration.aspx" publishTime="08/23/2011 13:48:02" />
+    <file relUrl="Web.config" publishTime="08/22/2011 15:53:41" />
+    <file relUrl="bin/ProductRegistration.pdb" publishTime="08/31/2011 10:28:19" />
+    <file relUrl="ApsimWebStyle.css" publishTime="08/22/2011 11:57:32" />
     <file relUrl="Screen_Styles.css" publishTime="08/22/2011 11:57:32" />
     <file relUrl="EmailBody.html" publishTime="08/19/2011 16:07:50" />
-    <file relUrl="ApsimWebStyle.css" publishTime="08/22/2011 11:57:32" />
-    <file relUrl="Web.config" publishTime="08/22/2011 15:53:41" />
-    <file relUrl="bin/ProductRegistration.pdb" publishTime="08/29/2011 08:43:10" />
-    <file relUrl="bin/ProductRegistration.dll" publishTime="08/29/2011 08:43:10" />
     <file relUrl="ViewRegistrations.aspx" publishTime="08/22/2011 16:06:48" />
+    <file relUrl="bin/ProductRegistration.dll" publishTime="08/31/2011 10:28:19" />
     <file relUrl="APSIM_Licence_V3.0.pdf" publishTime="08/22/2011 09:49:39" />
+    <file relUrl="bin/CSGeneral.dll" publishTime="08/31/2011 10:28:05" />
+    <file relUrl="Registration.aspx" publishTime="08/23/2011 13:48:02" />
     <file relUrl="Thankyou.aspx" publishTime="08/23/2011 12:50:22" />
     <file relUrl="OtherDisclaimer.html" publishTime="08/22/2011 10:04:57" />
+    <file relUrl="bin/CSGeneral.pdb" publishTime="08/31/2011 10:28:05" />
+    <file relUrl="APSIMDisclaimer.html" publishTime="08/23/2011 12:45:44" />
   </publishProfile>
 </publishData>
