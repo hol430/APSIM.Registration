@@ -190,6 +190,9 @@ namespace ProductRegistration
         {
             string DownloadDirectory = Path.Combine(Request.PhysicalApplicationPath, "Downloads");
             string OurURL = Request.Url.AbsoluteUri.Replace("Registration.aspx", "");
+            if (OurURL.Contains('?'))
+                OurURL = OurURL.Remove(OurURL.IndexOf('?'));
+
             string ProductName = GetProductName();
             ProductName = ProductName.Replace("?", "");
             foreach (string SubDirectory in Directory.GetDirectories(DownloadDirectory))
