@@ -138,8 +138,25 @@ namespace ProductRegistration
 
             StreamReader In = new StreamReader(MailBodyFile);
             string Body = In.ReadToEnd();
-            Body = Body.Replace("$DownloadURL$", GetDownloadURL());
+            string DownloadURL = GetDownloadURL();
+            Body = Body.Replace("$DownloadURL$", DownloadURL);
             Body = Body.Replace("$PASSWORD$", GetProductPassword());
+
+            if (GetProductVersion() <= 73)
+            {
+                // APSIM 7.3 or earlier.
+                Body = Body.Replace("$MSI$", "");
+            }
+            else
+            {
+                string DownloadMSI = Path.ChangeExtension(DownloadURL, ".msi");
+                    
+                Body = Body.Replace("$MSI$", "<p>To download a version of APSIM that doesn't check for the required Microsoft " +
+                                             "runtime libraries <a href=" + DownloadMSI + ">click here</a>. This can be useful " +
+                                             "when APSIM won't install because it thinks the required runtimes aren't present.");
+            }
+
+
             Mail.Body = Body;
             In.Close();
 
@@ -181,6 +198,15 @@ namespace ProductRegistration
                     Password = "The Password for this release of APSIM is <b>" + VersionNumberString.Replace(".", "") + "0004860</b>";
             }
             return Password;
+        }
+
+        /// <summary>
+        /// Return the version
+        /// </summary>
+        private int GetProductVersion()
+        {
+            string VersionNumberString = Version.Text;
+            return Convert.ToInt32(Convert.ToDouble(VersionNumberString) * 10);
         }
 
         /// <summary>
