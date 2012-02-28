@@ -8,7 +8,7 @@
 </head>
 <body>
     <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
-       ConnectionString="<%$ ConnectionStrings:ProductRegistrationsConnectionString %>" 
+       ConnectionString="Data Source=www.apsim.info\SQLEXPRESS;Initial Catalog=ProductRegistrations;Persist Security Info=True;User ID=sv-login-internal;password=P@ssword123" 
        SelectCommand="SELECT * FROM [Registrations]"></asp:SqlDataSource>
 </body>
 </html>
