@@ -13,6 +13,7 @@
     <RootNamespace>ProductRegistration</RootNamespace>
     <AssemblyName>ProductRegistration</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -95,7 +96,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="APSIM_Licence_V3.0.pdf" />
+    <None Include="APSIM_Licence_AI_ V4.0_online.pdf" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -160,7 +160,7 @@ namespace ProductRegistration
             Mail.Body = Body;
             In.Close();
 
-            string AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "APSIM_Licence_V3.0.pdf");
+            string AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "APSIM_Licence_AI_ V4.0_online.pdf");
             Mail.Attachments.Add(new System.Net.Mail.Attachment(AttachmentFileName));
 
             System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp-relay.csiro.au");
