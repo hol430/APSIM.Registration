@@ -61,7 +61,7 @@
             <asp:TableCell runat="server"><asp:TextBox ID="City" runat="server" Width="200px"></asp:TextBox></asp:TableCell>
          </asp:TableRow>
          <asp:TableRow runat="server">
-            <asp:TableCell runat="server">State/Provence:</asp:TableCell>
+            <asp:TableCell runat="server">State/Province:</asp:TableCell>
             <asp:TableCell runat="server"><asp:TextBox ID="State" runat="server" Width="200px"></asp:TextBox></asp:TableCell>
          </asp:TableRow>
          <asp:TableRow runat="server">

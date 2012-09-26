@@ -11,7 +11,7 @@
     <div>
     
        <asp:Label ID="Label1" runat="server" 
-          Text="Thankyou for regestering for access to APSIM. You will receive an email shortly with download instructions."></asp:Label>
+          Text="Thankyou for registering for access to APSIM. You will receive an email shortly with download instructions."></asp:Label>
     
     </div>
     </form>
