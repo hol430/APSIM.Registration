@@ -96,7 +96,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="APSIM_Licence_AI_ V4.0_online.pdf" />
+    <None Include="APSIM_NonCommercial_RD_licence_V5.0_online_13.12.2012.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
