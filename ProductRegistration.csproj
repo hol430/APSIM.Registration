@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CSGeneral">
-      <HintPath>..\..\Apsim\Model\CSGeneral.dll</HintPath>
+      <HintPath>..\APSIM\Model\CSGeneral.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web.DynamicData" />
