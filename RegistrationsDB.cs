@@ -14,7 +14,7 @@ public class RegistrationsDB
     public void Open()
     {
         //string ConnectionString = "Data Source=www.apsim.info\\SQLEXPRESS;Initial Catalog=\"APSIM Builds\";Integrated Security=True";
-        string ConnectionString = "Data Source=www.apsim.info\\SQLEXPRESS;Database=\"ProductRegistrations\";User ID=sv-login-internal;password=P@ssword123";
+        string ConnectionString = "Data Source=www.apsim.info;Database=\"ProductRegistrations\";User ID=sv-login-internal;password=P@ssword123";
         Connection = new SqlConnection(ConnectionString);
         Connection.Open();
     }
