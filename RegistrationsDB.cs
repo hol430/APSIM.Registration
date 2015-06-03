@@ -13,8 +13,7 @@ public class RegistrationsDB
     /// </summary>
     public void Open()
     {
-        //string ConnectionString = "Data Source=www.apsim.info\\SQLEXPRESS;Initial Catalog=\"APSIM Builds\";Integrated Security=True";
-        string ConnectionString = "Data Source=www.apsim.info;Database=\"ProductRegistrations\";User ID=sv-login-internal;password=P@ssword123";
+        string ConnectionString = System.IO.File.ReadAllText(@"\\IIS-EXT1\APSIM-Sites\dbConnect.txt") + ";Database=ProductRegistrations";
         Connection = new SqlConnection(ConnectionString);
         Connection.Open();
     }
