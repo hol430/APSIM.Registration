@@ -19,6 +19,7 @@ namespace ProductRegistration
 
             Response.ContentType = "text/plain";
 
+            SqlDataSource1.ConnectionString = System.IO.File.ReadAllText(@"\\IIS-EXT1\APSIM-Sites\dbConnect.txt") + ";Database=ProductRegistrations";
             System.Data.DataView dv = (DataView) SqlDataSource1.Select(new DataSourceSelectArguments());
             DataTable Data = dv.ToTable();
             Response.Write(DataTableUtility.DataTableToCSV(Data, 1));
