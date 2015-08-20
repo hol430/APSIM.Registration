@@ -45,6 +45,7 @@ namespace ProductRegistration
                 }
                 Versions.Sort();
                 Versions.Reverse();
+                Versions.Add("Next Generation");
                 foreach (string VersionString in Versions)
                     Version.Items.Add(VersionString);
                 
@@ -191,13 +192,16 @@ namespace ProductRegistration
             if (Version.Visible)
             {
                 string VersionNumberString = Version.Text;
-                int VersionNumber = Convert.ToInt32(Convert.ToDouble(VersionNumberString) * 10);
-                if (VersionNumber == 73)
-                    Password = "The password for this release of APSIM is: <b>hety-9895-yrw-6040</b>";
-                else if (VersionNumber == 72)
-                    Password = "The password for this release of APSIM is: <b>fedt-1141-hsd-2051</b>";
-                else if (VersionNumber < 72)
-                    Password = "The Password for this release of APSIM is <b>" + VersionNumberString.Replace(".", "") + "0004860</b>";
+                if (VersionNumberString != "Next Generation")
+                {
+                    int VersionNumber = Convert.ToInt32(Convert.ToDouble(VersionNumberString) * 10);
+                    if (VersionNumber == 73)
+                        Password = "The password for this release of APSIM is: <b>hety-9895-yrw-6040</b>";
+                    else if (VersionNumber == 72)
+                        Password = "The password for this release of APSIM is: <b>fedt-1141-hsd-2051</b>";
+                    else if (VersionNumber < 72)
+                        Password = "The Password for this release of APSIM is <b>" + VersionNumberString.Replace(".", "") + "0004860</b>";
+                }
             }
             return Password;
         }
@@ -208,7 +212,10 @@ namespace ProductRegistration
         private int GetProductVersion()
         {
             string VersionNumberString = Version.Text;
-            return Convert.ToInt32(Convert.ToDouble(VersionNumberString) * 10);
+            if (VersionNumberString == "Next Generation")
+                return Int32.MaxValue;
+            else
+                return Convert.ToInt32(Convert.ToDouble(VersionNumberString) * 10);
         }
 
         /// <summary>
@@ -222,6 +229,16 @@ namespace ProductRegistration
                 OurURL = OurURL.Remove(OurURL.IndexOf('?'));
 
             string ProductName = GetProductName();
+            if (ProductName == "APSIMNext Generation")
+            {
+                string latestURL;
+                using (BuildService.BuildProviderClient builds = new BuildService.BuildProviderClient())
+                {
+                    latestURL = builds.GetURLOfLatestVersion();
+                }
+                 
+                return latestURL;
+            }
             ProductName = ProductName.Replace("?", "");
             foreach (string SubDirectory in Directory.GetDirectories(DownloadDirectory))
             {
