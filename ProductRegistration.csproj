@@ -67,12 +67,13 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="APSIMDisclaimer.html" />
     <Content Include="ApsimWebStyle.css" />
+    <Content Include="APSIM_NonCommercial_RD_licence_V6.0_Nov_2015.htm" />
     <Content Include="EmailBody.html" />
     <Content Include="OtherDisclaimer.html" />
     <Content Include="Registration.aspx" />
     <Content Include="Screen_Styles.css" />
+    <Content Include="APSIM_NonCommercial_RD_licence_V6.0_Nov_2015.pdf" />
     <None Include="Service References\BuildService\Builds.disco" />
     <None Include="Service References\BuildService\configuration91.svcinfo" />
     <None Include="Service References\BuildService\configuration.svcinfo" />
@@ -134,9 +135,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="APSIM_NonCommercial_RD_licence_V5.0_online_13.12.2012.pdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
   </ItemGroup>
   <ItemGroup>

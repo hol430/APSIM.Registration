@@ -1,1 +1,7 @@
 *.FileListAbsolute.txt
+*.user
+*.suo
+bin/CSGeneral.dll
+bin/
+obj/Debug/DesignTimeResolveAssemblyReferences.cache
+obj/
