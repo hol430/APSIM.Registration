@@ -130,7 +130,7 @@ namespace ProductRegistration
         private void SendEmail()
         {
             System.Net.Mail.MailMessage Mail = new System.Net.Mail.MailMessage();
-            Mail.From = new System.Net.Mail.MailAddress("no-reply@csiro.au");
+            Mail.From = new System.Net.Mail.MailAddress("no-reply@apsim.info");
             Mail.To.Add(Email.Text);
             Mail.Subject = "APSIM Software Non-Commercial Licence";
             Mail.IsBodyHtml = true;
@@ -166,7 +166,11 @@ namespace ProductRegistration
             AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "Guide to Referencing APSIM in Publications.pdf");
             Mail.Attachments.Add(new System.Net.Mail.Attachment(AttachmentFileName));
 
-            System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp-relay.csiro.au");
+            string[] creds = File.ReadAllLines(@"D:\Websites\email.txt");
+
+            System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(creds[0]);
+            smtp.Port = Convert.ToInt32(creds[1]);
+            smtp.Credentials = new System.Net.NetworkCredential(creds[2], creds[3]);
             smtp.Send(Mail);
         }
 

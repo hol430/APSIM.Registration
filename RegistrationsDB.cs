@@ -13,7 +13,7 @@ public class RegistrationsDB
     /// </summary>
     public void Open()
     {
-        string ConnectionString = System.IO.File.ReadAllText(@"\\IIS-EXT1\APSIM-Sites\dbConnect.txt") + ";Database=ProductRegistrations";
+        string ConnectionString = System.IO.File.ReadAllText(@"D:\Websites\dbConnect.txt") + ";Database=ProductRegistrations";
         Connection = new SqlConnection(ConnectionString);
         Connection.Open();
     }
