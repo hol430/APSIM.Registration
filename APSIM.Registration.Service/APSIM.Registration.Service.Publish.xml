@@ -1,0 +1,9 @@
+<publishData>
+  <publishTarget publishUrl="ftp://www.apsim.info/APSIM.Registration.Service">
+    <file relUrl="Registration.svc" publishTime="02/10/2016 11:20:31" />
+    <file relUrl="bin/APSIM.Registration.Service.pdb" publishTime="02/10/2016 12:20:50" />
+    <file relUrl="bin/APSIM.Registration.Service.dll" publishTime="02/10/2016 12:20:50" />
+    <file relUrl="Web.config" publishTime="02/10/2016 12:17:35" />
+    <file relUrl="bin/APSIM.Registration.Service.dll.config" publishTime="02/10/2016 12:17:35" />
+  </publishTarget>
+</publishData>
