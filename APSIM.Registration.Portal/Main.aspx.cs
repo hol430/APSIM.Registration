@@ -66,7 +66,7 @@ namespace ProductRegistration
             {
                 VersionLabel.Text = "Version:*";
                 Version.Visible = true;
-                FileName = "APSIM_NonCommercial_RD_licence_V6.0_Nov_2015.htm";
+                FileName = "APSIM_NonCommercial_RD_licence.htm";
             }
             else
             {
@@ -174,7 +174,7 @@ namespace ProductRegistration
             Mail.Body = Body;
             In.Close();
 
-            string AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "APSIM_NonCommercial_RD_licence_V6.0_Nov_2015.pdf");
+            string AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "APSIM_NonCommercial_RD_licence.pdf");
             Mail.Attachments.Add(new System.Net.Mail.Attachment(AttachmentFileName));
             AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "Guide to Referencing APSIM in Publications.pdf");
             Mail.Attachments.Add(new System.Net.Mail.Attachment(AttachmentFileName));
