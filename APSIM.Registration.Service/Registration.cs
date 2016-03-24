@@ -27,39 +27,35 @@ namespace APSIM.Registration.Service
         /// <param name="email"></param>
         /// <param name="product"></param>
         public void Add(string firstName, string lastName, string organisation, string address1, string address2,
-                    string city, string state, string postcode, string country, string email, string product,
-                    string ChangeDBPassword)
+                    string city, string state, string postcode, string country, string email, string product)
         {
-            if (ChangeDBPassword == GetValidPassword())
+            string sql = "INSERT INTO Registrations (Date, FirstName, LastName, Organisation, Address1, Address2, City, State, Postcode, Country, Email, Product) " +
+                            "VALUES (@Date, @FirstName, @LastName, @Organisation, @Address1, @Address2, @City, @State, @Postcode, @Country, @Email, @Product)";
+
+            // Address2 and state are optional so check for them and give default values.
+            if (address2 == null || address2 == "")
+                address2 = "-";
+            if (state == null || state == "")
+                state = "-";
+
+            using (SqlConnection connection = Open())
             {
-                string sql = "INSERT INTO Registrations (Date, FirstName, LastName, Organisation, Address1, Address2, City, State, Postcode, Country, Email, Product) " +
-                             "VALUES (@Date, @FirstName, @LastName, @Organisation, @Address1, @Address2, @City, @State, @Postcode, @Country, @Email, @Product)";
-
-                // Address2 and state are optional so check for them and give default values.
-                if (address2 == null || address2 == "")
-                    address2 = "-";
-                if (state == null || state == "")
-                    state = "-";
-
-                using (SqlConnection connection = Open())
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        command.Parameters.Add(new SqlParameter("@Date", DateTime.Now));
-                        command.Parameters.Add(new SqlParameter("@FirstName", firstName));
-                        command.Parameters.Add(new SqlParameter("@LastName", lastName));
-                        command.Parameters.Add(new SqlParameter("@Organisation", organisation));
-                        command.Parameters.Add(new SqlParameter("@Address1", address1));
-                        command.Parameters.Add(new SqlParameter("@Address2", address2));
-                        command.Parameters.Add(new SqlParameter("@City", city));
-                        command.Parameters.Add(new SqlParameter("@State", state));
-                        command.Parameters.Add(new SqlParameter("@Postcode", postcode));
-                        command.Parameters.Add(new SqlParameter("@Country", country));
-                        command.Parameters.Add(new SqlParameter("@Email", email));
-                        command.Parameters.Add(new SqlParameter("@Product", product));
-                        command.ExecuteNonQuery();
+                    command.Parameters.Add(new SqlParameter("@Date", DateTime.Now));
+                    command.Parameters.Add(new SqlParameter("@FirstName", firstName));
+                    command.Parameters.Add(new SqlParameter("@LastName", lastName));
+                    command.Parameters.Add(new SqlParameter("@Organisation", organisation));
+                    command.Parameters.Add(new SqlParameter("@Address1", address1));
+                    command.Parameters.Add(new SqlParameter("@Address2", address2));
+                    command.Parameters.Add(new SqlParameter("@City", city));
+                    command.Parameters.Add(new SqlParameter("@State", state));
+                    command.Parameters.Add(new SqlParameter("@Postcode", postcode));
+                    command.Parameters.Add(new SqlParameter("@Country", country));
+                    command.Parameters.Add(new SqlParameter("@Email", email));
+                    command.Parameters.Add(new SqlParameter("@Product", product));
+                    command.ExecuteNonQuery();
 
-                    }
                 }
             }
         }

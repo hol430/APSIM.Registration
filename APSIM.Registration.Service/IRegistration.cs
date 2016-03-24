@@ -28,10 +28,9 @@ namespace APSIM.Registration.Service
         [OperationContract]
         [WebGet(UriTemplate = "/Add?firstName={firstName}&lastName={lastName}&organisation={organisation}" +
                                   "&address1={address1}&address2={address2}&city={city}&state={state}&postcode={postcode}" +
-                                  "&country={country}&email={email}&product={product}" +
-                                  "&ChangeDBPassword={ChangeDBPassword}", BodyStyle = WebMessageBodyStyle.WrappedRequest)]
+                                  "&country={country}&email={email}&product={product}",
+                                  BodyStyle = WebMessageBodyStyle.WrappedRequest)]
         void Add(string firstName, string lastName, string organisation, string address1, string address2,
-                 string city, string state, string postcode, string country, string email, string product,
-                 string ChangeDBPassword);
+                 string city, string state, string postcode, string country, string email, string product);
     }
 }
