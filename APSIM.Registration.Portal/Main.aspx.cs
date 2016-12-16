@@ -35,18 +35,23 @@ namespace ProductRegistration
                 List<string> Versions = new List<string>();
                 Version.Items.Clear();
                 string DownloadDirectory = Path.Combine(Request.PhysicalApplicationPath, "Downloads");
-                foreach (string SubDirectory in Directory.GetDirectories(DownloadDirectory))
+                if (Directory.Exists(DownloadDirectory))
                 {
-                    foreach (string FileName in Directory.GetFiles(SubDirectory, "Apsim*.exe"))
+                    foreach (string SubDirectory in Directory.GetDirectories(DownloadDirectory))
                     {
-                        string VersionNumber = Path.GetFileNameWithoutExtension(FileName).Replace("Apsim", "");
-                        VersionNumber = VersionNumber.Replace("Setup", "");
-                        Versions.Add(VersionNumber);
+                        foreach (string FileName in Directory.GetFiles(SubDirectory, "Apsim*.exe"))
+                        {
+                            string VersionNumber = Path.GetFileNameWithoutExtension(FileName).Replace("Apsim", "");
+                            VersionNumber = VersionNumber.Replace("Setup", "");
+                            Versions.Add(VersionNumber);
+                        }
                     }
                 }
                 Versions.Sort();
                 Versions.Reverse();
-                Versions.Add("Next Generation");
+                Versions.Add("Next Generation (Windows)");
+                Versions.Add("Next Generation (Debian)");
+                Versions.Add("Next Generation (Mac)");
                 foreach (string VersionString in Versions)
                     Version.Items.Add(VersionString);
                 
@@ -209,7 +214,7 @@ namespace ProductRegistration
             if (Version.Visible)
             {
                 string VersionNumberString = Version.Text;
-                if (VersionNumberString != "Next Generation")
+                if (!VersionNumberString.Contains("Next Generation"))
                 {
                     int VersionNumber = Convert.ToInt32(Convert.ToDouble(VersionNumberString) * 10);
                     if (VersionNumber == 73)
@@ -229,7 +234,7 @@ namespace ProductRegistration
         private int GetProductVersion()
         {
             string VersionNumberString = Version.Text;
-            if (VersionNumberString == "Next Generation")
+            if (VersionNumberString.Contains("Next Generation"))
                 return Int32.MaxValue;
             else
                 return Convert.ToInt32(Convert.ToDouble(VersionNumberString) * 10);
@@ -246,9 +251,11 @@ namespace ProductRegistration
                 OurURL = OurURL.Remove(OurURL.IndexOf('?'));
 
             string ProductName = GetProductName();
-            if (ProductName == "APSIMNext Generation")
+            if (ProductName.Contains("APSIMNext Generation"))
             {
-                string url = "http://www.apsim.info/APSIM.Builds.Service/Builds.svc/GetURLOfLatestVersion";
+                string st = ProductName;
+                string operatingSystem = StringUtilities.SplitOffBracketedValue(ref st, '(', ')');
+                string url = "http://www.apsim.info/APSIM.Builds.Service/Builds.svc/GetURLOfLatestVersion?operatingSystem=" + operatingSystem;
                 return WebUtilities.CallRESTService<string>(url);
             }
             ProductName = ProductName.Replace("?", "");
@@ -264,7 +271,6 @@ namespace ProductRegistration
                 }
             }
             throw new Exception("Cannot find product name : " + ProductName);
-
         }
 
         /// <summary>
