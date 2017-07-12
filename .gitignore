@@ -5,3 +5,4 @@ bin/CSGeneral.dll
 bin/
 obj/Debug/DesignTimeResolveAssemblyReferences.cache
 obj/
+packages/
