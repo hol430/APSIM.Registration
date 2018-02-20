@@ -161,7 +161,7 @@ namespace ProductRegistration
             Body = Body.Replace("$DownloadURL$", DownloadURL);
             Body = Body.Replace("$PASSWORD$", GetProductPassword());
 
-            if (GetProductVersion() <= 73)
+            if (GetProductVersion() <= 73 || Version.Text.Contains("Next Generation"))
             {
                 // APSIM 7.3 or earlier.
                 Body = Body.Replace("$MSI$", "");
