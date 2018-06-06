@@ -47,7 +47,7 @@ namespace ProductRegistration
                         }
                     }
                 }
-                Versions.Sort();
+                Versions.Sort(new VersionComparer());
                 Versions.Reverse();
                 Versions.Add("Next Generation (Windows)");
                 Versions.Add("Next Generation (Debian)");
@@ -217,12 +217,15 @@ namespace ProductRegistration
                 if (!VersionNumberString.Contains("Next Generation"))
                 {
                     int VersionNumber = Convert.ToInt32(Convert.ToDouble(VersionNumberString) * 10);
-                    if (VersionNumber == 73)
-                        Password = "The password for this release of APSIM is: <b>hety-9895-yrw-6040</b>";
-                    else if (VersionNumber == 72)
-                        Password = "The password for this release of APSIM is: <b>fedt-1141-hsd-2051</b>";
-                    else if (VersionNumber < 72)
-                        Password = "The Password for this release of APSIM is <b>" + VersionNumberString.Replace(".", "") + "0004860</b>";
+                    if (VersionNumberString != "7.10")
+                    {
+                        if (VersionNumber == 73)
+                            Password = "The password for this release of APSIM is: <b>hety-9895-yrw-6040</b>";
+                        else if (VersionNumber == 72)
+                            Password = "The password for this release of APSIM is: <b>fedt-1141-hsd-2051</b>";
+                        else if (VersionNumber < 72)
+                            Password = "The Password for this release of APSIM is <b>" + VersionNumberString.Replace(".", "") + "0004860</b>";
+                    }
                 }
             }
             return Password;
@@ -322,5 +325,31 @@ namespace ProductRegistration
             int posPassword = connectionString.IndexOf("Password=");
             return connectionString.Substring(posPassword + "Password=".Length);
         }
+
+        private class VersionComparer : IComparer<string>
+        {
+            /// <summary>
+            /// Compares two version strings and returns a value indicating whether one is less than, equal to, or greater than the other.
+            /// </summary>
+            /// <param name="x">The first object to compare.</param>
+            /// <param name="y">The second object to compare.</param>
+            /// <returns>
+            /// A signed integer that indicates the relative values of <paramref name="x" /> and <paramref name="y" />, as shown in the following table.Value Meaning Less than zero <paramref name="x" /> is less than <paramref name="y" />. Zero <paramref name="x" /> equals <paramref name="y" />. Greater than zero <paramref name="x" /> is greater than <paramref name="y" />.
+            /// </returns>
+            public int Compare(string x, string y)
+            {
+                int indexPeriod = x.IndexOf('.');
+                int xVersion = Convert.ToInt32(x.Substring(indexPeriod+1));
+                int yVersion = Convert.ToInt32(y.Substring(indexPeriod+1));
+                if (xVersion < yVersion)
+                    return -1;
+                else if (xVersion > yVersion)
+                    return 1;
+                else
+                    return 0;
+            }
+
+        }
+
     }
 }
