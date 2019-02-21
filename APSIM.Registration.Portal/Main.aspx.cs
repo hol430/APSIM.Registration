@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.IO;
 using APSIM.Shared.Utilities;
+using System.Reflection;
 
 namespace ProductRegistration
 {
@@ -93,26 +94,38 @@ namespace ProductRegistration
         /// </summary>
         protected void YesButton_Click(object sender, EventArgs e)
         {
-            if (ControlsAreValid())
+            try
             {
-                UpdateDB();
-                string RedirectURL;
-                if (GetProductName().ToLower().Contains("apsim"))
+                if (ControlsAreValid())
                 {
-                    SendEmail();
-                    RedirectURL = "Thankyou.aspx";
+                    WriteToLogFile("User has submitted form with valid information.", MessageType.Info);
+                    UpdateDB();
+                    string RedirectURL;
+                    if (GetProductName().ToLower().Contains("apsim"))
+                    {
+                        WriteToLogFile("User wants to download APSIM.", MessageType.Info);
+                        SendEmail();
+                        RedirectURL = "Thankyou.aspx";
+                    }
+                    else
+                    {
+                        WriteToLogFile("User has registered for a product that is not APSIM.", MessageType.Info);
+                        RedirectURL = "Thankyou.aspx?URL=" + GetDownloadURL();
+                    }
+                    Response.Redirect(RedirectURL, false);
+                    Context.ApplicationInstance.CompleteRequest();
                 }
-                else
-                {
-                    RedirectURL = "Thankyou.aspx?URL=" + GetDownloadURL();
-                }
-                Response.Redirect(RedirectURL);
             }
-
+            catch (Exception error)
+            {
+                WriteToLogFile(error.ToString(), MessageType.Error);
+                throw error;
+            }
         }
         protected void NoButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Request.UrlReferrer.AbsoluteUri);
+            Response.Redirect(Request.UrlReferrer.AbsoluteUri, false);
+            Context.ApplicationInstance.CompleteRequest();
         }
 
         /// <summary>
@@ -137,8 +150,16 @@ namespace ProductRegistration
             if (State.Text != "")
                 url += "&state=" + State.Text;
 
-         
-            WebUtilities.CallRESTService<object>(url);
+            WriteToLogFile("Updating DB. Request: " + url, MessageType.Info);
+            try
+            {
+                WebUtilities.CallRESTService<object>(url);
+                WriteToLogFile("DB updated successfully.", MessageType.Info);
+            }
+            catch (Exception error)
+            {
+                throw new Exception("Encountered an error while writing to DB.", error);
+            }
         }
 
 
@@ -147,49 +168,58 @@ namespace ProductRegistration
         /// </summary>
         private void SendEmail()
         {
-            System.Net.Mail.MailMessage Mail = new System.Net.Mail.MailMessage();
-            Mail.From = new System.Net.Mail.MailAddress("no-reply@apsim.info");
-            Mail.To.Add(Email.Text);
-            Mail.Subject = "APSIM Software Non-Commercial Licence";
-            Mail.IsBodyHtml = true;
-
-            string MailBodyFile = Path.Combine(Request.PhysicalApplicationPath, "EmailBody.html");
-
-            StreamReader In = new StreamReader(MailBodyFile);
-            string Body = In.ReadToEnd();
-            string DownloadURL = GetDownloadURL();
-            Body = Body.Replace("$DownloadURL$", DownloadURL);
-            Body = Body.Replace("$PASSWORD$", GetProductPassword());
-
-            if (GetProductVersion() <= 73 || Version.Text.Contains("Next Generation"))
+            try
             {
-                // APSIM 7.3 or earlier.
-                Body = Body.Replace("$MSI$", "");
+                System.Net.Mail.MailMessage Mail = new System.Net.Mail.MailMessage();
+                Mail.From = new System.Net.Mail.MailAddress("no-reply@apsim.info");
+                Mail.To.Add(Email.Text);
+                Mail.Subject = "APSIM Software Non-Commercial Licence";
+                Mail.IsBodyHtml = true;
+
+                string MailBodyFile = Path.Combine(Request.PhysicalApplicationPath, "EmailBody.html");
+
+                StreamReader In = new StreamReader(MailBodyFile);
+                string Body = In.ReadToEnd();
+                string DownloadURL = GetDownloadURL();
+                WriteToLogFile($"Download URL='{DownloadURL}'", MessageType.Info);
+                Body = Body.Replace("$DownloadURL$", DownloadURL);
+                Body = Body.Replace("$PASSWORD$", GetProductPassword());
+
+                if (GetProductVersion() <= 73 || Version.Text.Contains("Next Generation"))
+                {
+                    // APSIM 7.3 or earlier.
+                    Body = Body.Replace("$MSI$", "");
+                }
+                else
+                {
+                    string DownloadMSI = Path.ChangeExtension(DownloadURL, ".msi");
+
+                    Body = Body.Replace("$MSI$", "<p>To download a version of APSIM that doesn't check for the required Microsoft " +
+                                                 "runtime libraries <a href=" + DownloadMSI + ">click here</a>. This can be useful " +
+                                                 "when APSIM won't install because it thinks the required runtimes aren't present.</p>");
+                }
+
+
+                Mail.Body = Body;
+                In.Close();
+
+                string AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "APSIM_NonCommercial_RD_licence.pdf");
+                Mail.Attachments.Add(new System.Net.Mail.Attachment(AttachmentFileName));
+                AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "Guide to Referencing APSIM in Publications.pdf");
+                Mail.Attachments.Add(new System.Net.Mail.Attachment(AttachmentFileName));
+
+                string[] creds = File.ReadAllLines(@"D:\Websites\email.txt");
+
+                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(creds[0]);
+                smtp.Port = Convert.ToInt32(creds[1]);
+                smtp.Credentials = new System.Net.NetworkCredential(creds[2], creds[3]);
+                smtp.Send(Mail);
+                WriteToLogFile($"Successfully sent email to '{Email.Text}'.", MessageType.Info);
             }
-            else
+            catch (Exception error)
             {
-                string DownloadMSI = Path.ChangeExtension(DownloadURL, ".msi");
-                    
-                Body = Body.Replace("$MSI$", "<p>To download a version of APSIM that doesn't check for the required Microsoft " +
-                                             "runtime libraries <a href=" + DownloadMSI + ">click here</a>. This can be useful " +
-                                             "when APSIM won't install because it thinks the required runtimes aren't present.");
+                throw new Exception("Encounterd an error while attempting to generate email.", error);
             }
-
-
-            Mail.Body = Body;
-            In.Close();
-
-            string AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "APSIM_NonCommercial_RD_licence.pdf");
-            Mail.Attachments.Add(new System.Net.Mail.Attachment(AttachmentFileName));
-            AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "Guide to Referencing APSIM in Publications.pdf");
-            Mail.Attachments.Add(new System.Net.Mail.Attachment(AttachmentFileName));
-
-            string[] creds = File.ReadAllLines(@"D:\Websites\email.txt");
-
-            System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(creds[0]);
-            smtp.Port = Convert.ToInt32(creds[1]);
-            smtp.Credentials = new System.Net.NetworkCredential(creds[2], creds[3]);
-            smtp.Send(Mail);
         }
 
         /// <summary>
@@ -282,35 +312,27 @@ namespace ProductRegistration
         private bool ControlsAreValid()
         {
             List<string> MissingFields = new List<string>();
-            if (FirstName.Text == "")
+            if (string.IsNullOrWhiteSpace(FirstName.Text))
                 MissingFields.Add("First name");
-            if (LastName.Text == "")
+            if (string.IsNullOrWhiteSpace(LastName.Text))
                 MissingFields.Add("Last name");
-            if (Organisation.Text == "")
+            if (string.IsNullOrWhiteSpace(Organisation.Text))
                 MissingFields.Add("Organisation");
-            if (Address1.Text == "")
+            if (string.IsNullOrWhiteSpace(Address1.Text))
                 MissingFields.Add("Address1");
-            if (City.Text == "")
+            if (string.IsNullOrWhiteSpace(City.Text))
                 MissingFields.Add("City");
-            if (Postcode.Text == "")
+            if (string.IsNullOrWhiteSpace(Postcode.Text))
                 MissingFields.Add("Postcode");
-            if (Country.Text == "")
+            if (string.IsNullOrWhiteSpace(Country.Text))
                 MissingFields.Add("Country");
-            if (Email.Text == "")
+            if (string.IsNullOrWhiteSpace(Email.Text))
                 MissingFields.Add("Email");
 
             if (MissingFields.Count > 0)
             {
-                string Message = "";
-                for (int i = 0; i < MissingFields.Count; i++)
-                {
-                    if (i > 0)
-                        Message += ", ";
-
-                    Message += MissingFields[i];
-                }
-                ErrorLabel.Text = "Error. You haven't entered anything for these fields: " + Message;
-                ErrorLabel.Visible = ErrorLabel.Text != "";
+                ErrorLabel.Text = "Error. You haven't entered anything for these fields: " + MissingFields.Aggregate((x, y) => $"{x}, {y}"); ;
+                ErrorLabel.Visible = true;
                 return false;
             }
             ErrorLabel.Visible = false;
@@ -324,6 +346,25 @@ namespace ProductRegistration
             string connectionString = File.ReadAllText(@"D:\Websites\ChangeDBPassword.txt");
             int posPassword = connectionString.IndexOf("Password=");
             return connectionString.Substring(posPassword + "Password=".Length);
+        }
+
+        private enum MessageType
+        {
+            Info,
+            Warning,
+            Error
+        }
+
+        private void WriteToLogFile(string message, MessageType type)
+        {
+            DateTime now = DateTime.Now;
+            string logFile = Path.Combine(Request.PhysicalApplicationPath, "logs", now.ToString("yyyy-MM-dd") + ".log");
+            string logFileDir = Path.GetDirectoryName(logFile);
+            if (!Directory.Exists(logFileDir))
+                Directory.CreateDirectory(logFileDir);
+
+            string output = string.Format("{0} {1}: {2}\n", now.ToString("yyyy-mm-dd HH:mm:ss"), type.ToString(), message);
+            File.AppendAllText(logFile, output);
         }
 
         private class VersionComparer : IComparer<string>
