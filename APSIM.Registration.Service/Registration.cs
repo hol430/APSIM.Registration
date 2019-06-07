@@ -9,6 +9,7 @@ namespace APSIM.Registration.Service
     using System.Runtime.Serialization;
     using System.ServiceModel;
     using System.Text;
+    using APSIM.Shared.Utilities;
 
     public class Registration : IRegistration
     {
@@ -37,6 +38,10 @@ namespace APSIM.Registration.Service
                 address2 = "-";
             if (state == null || state == "")
                 state = "-";
+
+            if (!Constants.Countries.Contains(country))
+                return;
+                //throw new Exception($"Invalid country name '{country}'");
 
             using (SqlConnection connection = Open())
             {
