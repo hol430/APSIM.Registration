@@ -40,7 +40,8 @@ namespace APSIM.Registration.Service
                 state = "-";
 
             if (!Constants.Countries.Contains(country))
-                throw new Exception($"Invalid country name '{country}'");
+                return;
+                //throw new Exception($"Invalid country name '{country}'");
 
             using (SqlConnection connection = Open())
             {
