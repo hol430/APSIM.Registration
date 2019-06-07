@@ -27,7 +27,7 @@ namespace ProductRegistration
                 Product.Items.Add("HowMuch?");
                 Product.Items.Add("HowLeaky?");
                 Product.Items.Add("Perfect");
-
+                Country.Items.AddRange(Constants.Countries.Select(c => new ListItem(c)).ToArray());
                 if (Request.QueryString["Product"] != null)
                 {
                     Product.Text = Product.Text = Request.QueryString["Product"];
