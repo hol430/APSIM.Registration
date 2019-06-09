@@ -65,6 +65,40 @@ namespace APSIM.Registration.Service
             }
         }
 
+        /// <summary>
+        /// Add a upgrade registration into the database.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="organisation"></param>
+        /// <param name="country"></param>
+        /// <param name="email"></param>
+        /// <param name="product"></param>
+        public void Add(string firstName, string lastName, string organisation, string country, string email, string product)
+        {
+            string sql = "INSERT INTO Registrations (Date, FirstName, LastName, Organisation, Country, Email, Product) " +
+                            "VALUES (@Date, @FirstName, @LastName, @Organisation, @Country, @Email, @Product)";
+
+            if (!Constants.Countries.Contains(country))
+                throw new Exception($"Invalid country name '{country}'");
+
+            using (SqlConnection connection = Open())
+            {
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add(new SqlParameter("@Date", DateTime.Now));
+                    command.Parameters.Add(new SqlParameter("@FirstName", firstName));
+                    command.Parameters.Add(new SqlParameter("@LastName", lastName));
+                    command.Parameters.Add(new SqlParameter("@Organisation", organisation));
+                    command.Parameters.Add(new SqlParameter("@Country", country));
+                    command.Parameters.Add(new SqlParameter("@Email", email));
+                    command.Parameters.Add(new SqlParameter("@Product", product));
+                    command.ExecuteNonQuery();
+
+                }
+            }
+        }
+
         /// <summary>Return the valid password for this web service.</summary>
         private static string GetValidPassword()
         {

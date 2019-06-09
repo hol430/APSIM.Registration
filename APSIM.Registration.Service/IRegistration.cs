@@ -32,5 +32,16 @@ namespace APSIM.Registration.Service
                                   BodyStyle = WebMessageBodyStyle.WrappedRequest)]
         void Add(string firstName, string lastName, string organisation, string address1, string address2,
                  string city, string state, string postcode, string country, string email, string product);
+
+        /// <summary>
+        /// Add a upgrade registration into the database.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="organisation"></param>
+        /// <param name="country"></param>
+        /// <param name="email"></param>
+        /// <param name="product"></param>
+        void Add(string firstName, string lastName, string organisation, string country, string email, string product);
     }
 }

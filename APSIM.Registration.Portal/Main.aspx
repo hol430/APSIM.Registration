@@ -49,26 +49,6 @@
             <asp:TableCell runat="server"><asp:TextBox ID="Organisation" runat="server" Width="400px"></asp:TextBox></asp:TableCell>
          </asp:TableRow>
          <asp:TableRow runat="server">
-            <asp:TableCell runat="server">Address 1*:</asp:TableCell>
-            <asp:TableCell runat="server"><asp:TextBox ID="Address1" runat="server" Width="400px"></asp:TextBox></asp:TableCell>
-         </asp:TableRow>
-         <asp:TableRow runat="server">
-            <asp:TableCell runat="server">Address 2:</asp:TableCell>
-            <asp:TableCell runat="server"><asp:TextBox ID="Address2" runat="server" Width="400px"></asp:TextBox></asp:TableCell>
-         </asp:TableRow>
-         <asp:TableRow runat="server">
-            <asp:TableCell runat="server">City/Location*:</asp:TableCell>
-            <asp:TableCell runat="server"><asp:TextBox ID="City" runat="server" Width="200px"></asp:TextBox></asp:TableCell>
-         </asp:TableRow>
-         <asp:TableRow runat="server">
-            <asp:TableCell runat="server">State/Province:</asp:TableCell>
-            <asp:TableCell runat="server"><asp:TextBox ID="State" runat="server" Width="200px"></asp:TextBox></asp:TableCell>
-         </asp:TableRow>
-         <asp:TableRow runat="server">
-            <asp:TableCell runat="server">Postcode/Zipcode*:</asp:TableCell>
-            <asp:TableCell runat="server"><asp:TextBox ID="Postcode" runat="server" Width="200px"></asp:TextBox></asp:TableCell>
-         </asp:TableRow>
-         <asp:TableRow runat="server">
             <asp:TableCell runat="server">Country*:</asp:TableCell>
             <asp:TableCell runat="server">
                 <asp:DropDownList ID="Country" runat="server" Width="200px">

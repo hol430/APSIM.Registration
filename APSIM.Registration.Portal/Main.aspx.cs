@@ -133,22 +133,13 @@ namespace ProductRegistration
         /// </summary>
         private void UpdateDB()
         {
-            string url = "http://www.apsim.info/APSIM.Registration.Service/Registration.svc/Add" +
+            string url = "https://www.apsim.info/APSIM.Registration.Service/Registration.svc/Add" +
                             "?firstName=" + FirstName.Text +
                             "&lastName=" + LastName.Text +
                             "&organisation=" + Organisation.Text +
-                            "&address1=" + Address1.Text +
-                            "&city=" + City.Text +
-                            "&postcode=" + Postcode.Text +
                             "&country=" + Country.Text +
                             "&email=" + Email.Text +
-                            "&product=" + GetProductName() +
-                            "&ChangeDBPassword=" + GetValidPassword();
-
-            if (Address2.Text != "")
-                url += "&address2=" + Address2.Text;
-            if (State.Text != "")
-                url += "&state=" + State.Text;
+                            "&product=" + GetProductName();
 
             WriteToLogFile("Updating DB. Request: " + url, MessageType.Info);
             try
@@ -318,14 +309,6 @@ namespace ProductRegistration
                 MissingFields.Add("Last name");
             if (string.IsNullOrWhiteSpace(Organisation.Text))
                 MissingFields.Add("Organisation");
-            if (string.IsNullOrWhiteSpace(Address1.Text))
-                MissingFields.Add("Address1");
-            if (string.IsNullOrWhiteSpace(City.Text))
-                MissingFields.Add("City");
-            if (string.IsNullOrWhiteSpace(Postcode.Text))
-                MissingFields.Add("Postcode");
-            if (string.IsNullOrWhiteSpace(Country.Text))
-                MissingFields.Add("Country");
             if (string.IsNullOrWhiteSpace(Email.Text))
                 MissingFields.Add("Email");
 
