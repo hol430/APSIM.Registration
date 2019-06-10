@@ -30,8 +30,8 @@ namespace APSIM.Registration.Service
         public void Add(string firstName, string lastName, string organisation, string address1, string address2,
                     string city, string state, string postcode, string country, string email, string product)
         {
-            string sql = "INSERT INTO Registrations (Date, FirstName, LastName, Organisation, Address1, Address2, City, State, Postcode, Country, Email, Product) " +
-                            "VALUES (@Date, @FirstName, @LastName, @Organisation, @Address1, @Address2, @City, @State, @Postcode, @Country, @Email, @Product)";
+            string sql = "INSERT INTO Registrations (Date, FirstName, LastName, Organisation, Address1, Address2, Postcode, Country, Email, Product) " +
+                            "VALUES (@Date, @FirstName, @LastName, @Organisation, @Address1, @Address2, @Postcode, @Country, @Email, @Product)";
 
             // Address2 and state are optional so check for them and give default values.
             if (address2 == null || address2 == "")
@@ -53,8 +53,6 @@ namespace APSIM.Registration.Service
                     command.Parameters.Add(new SqlParameter("@Organisation", organisation));
                     command.Parameters.Add(new SqlParameter("@Address1", address1));
                     command.Parameters.Add(new SqlParameter("@Address2", address2));
-                    command.Parameters.Add(new SqlParameter("@City", city));
-                    command.Parameters.Add(new SqlParameter("@State", state));
                     command.Parameters.Add(new SqlParameter("@Postcode", postcode));
                     command.Parameters.Add(new SqlParameter("@Country", country));
                     command.Parameters.Add(new SqlParameter("@Email", email));
@@ -76,8 +74,8 @@ namespace APSIM.Registration.Service
         /// <param name="product"></param>
         public void AddNew(string firstName, string lastName, string organisation, string country, string email, string product)
         {
-            string sql = "INSERT INTO Registrations (Date, FirstName, LastName, Organisation, Address1, Address2, City, State, Postcode, Country, Email, Product) " +
-                            "VALUES (@Date, @FirstName, @LastName, @Organisation, @Address1, @Address2, @City, @State, @Postcode, @Country, @Email, @Product)";
+            string sql = "INSERT INTO Registrations (Date, FirstName, LastName, Organisation, Address1, Address2, Postcode, Country, Email, Product) " +
+                            "VALUES (@Date, @FirstName, @LastName, @Organisation, @Address1, @Address2, @Postcode, @Country, @Email, @Product)";
 
             if (!Constants.Countries.Contains(country))
                 throw new Exception($"Invalid country name '{country}'");
@@ -92,8 +90,6 @@ namespace APSIM.Registration.Service
                     command.Parameters.Add(new SqlParameter("@Organisation", organisation));
                     command.Parameters.Add(new SqlParameter("@Address1", "-"));
                     command.Parameters.Add(new SqlParameter("@Address2", "-"));
-                    command.Parameters.Add(new SqlParameter("@City", "-"));
-                    command.Parameters.Add(new SqlParameter("@State", "-"));
                     command.Parameters.Add(new SqlParameter("@Postcode", "-"));
                     command.Parameters.Add(new SqlParameter("@Country", country));
                     command.Parameters.Add(new SqlParameter("@Email", email));
