@@ -74,10 +74,10 @@ namespace APSIM.Registration.Service
         /// <param name="country"></param>
         /// <param name="email"></param>
         /// <param name="product"></param>
-        public void Add(string firstName, string lastName, string organisation, string country, string email, string product)
+        public void AddNew(string firstName, string lastName, string organisation, string country, string email, string product)
         {
-            string sql = "INSERT INTO Registrations (Date, FirstName, LastName, Organisation, Country, Email, Product) " +
-                            "VALUES (@Date, @FirstName, @LastName, @Organisation, @Country, @Email, @Product)";
+            string sql = "INSERT INTO Registrations (Date, FirstName, LastName, Organisation, Address1, Address2, City, State, Postcode, Country, Email, Product) " +
+                            "VALUES (@Date, @FirstName, @LastName, @Organisation, @Address1, @Address2, @City, @State, @Postcode, @Country, @Email, @Product)";
 
             if (!Constants.Countries.Contains(country))
                 throw new Exception($"Invalid country name '{country}'");
@@ -90,6 +90,11 @@ namespace APSIM.Registration.Service
                     command.Parameters.Add(new SqlParameter("@FirstName", firstName));
                     command.Parameters.Add(new SqlParameter("@LastName", lastName));
                     command.Parameters.Add(new SqlParameter("@Organisation", organisation));
+                    command.Parameters.Add(new SqlParameter("@Address1", "-"));
+                    command.Parameters.Add(new SqlParameter("@Address2", "-"));
+                    command.Parameters.Add(new SqlParameter("@City", "-"));
+                    command.Parameters.Add(new SqlParameter("@State", "-"));
+                    command.Parameters.Add(new SqlParameter("@Postcode", "-"));
                     command.Parameters.Add(new SqlParameter("@Country", country));
                     command.Parameters.Add(new SqlParameter("@Email", email));
                     command.Parameters.Add(new SqlParameter("@Product", product));

@@ -133,7 +133,7 @@ namespace ProductRegistration
         /// </summary>
         private void UpdateDB()
         {
-            string url = "https://www.apsim.info/APSIM.Registration.Service/Registration.svc/Add" +
+            string url = "https://www.apsim.info/APSIM.Registration.Service/Registration.svc/AddNew" +
                             "?firstName=" + FirstName.Text +
                             "&lastName=" + LastName.Text +
                             "&organisation=" + Organisation.Text +

@@ -42,6 +42,10 @@ namespace APSIM.Registration.Service
         /// <param name="country"></param>
         /// <param name="email"></param>
         /// <param name="product"></param>
-        void Add(string firstName, string lastName, string organisation, string country, string email, string product);
+        [OperationContract]
+        [WebGet(UriTemplate = "/AddNew?firstName={firstName}&lastName={lastName}&organisation={organisation}" +
+                                  "&country={country}&email={email}&product={product}",
+                                  BodyStyle = WebMessageBodyStyle.WrappedRequest)]
+        void AddNew(string firstName, string lastName, string organisation, string country, string email, string product);
     }
 }
