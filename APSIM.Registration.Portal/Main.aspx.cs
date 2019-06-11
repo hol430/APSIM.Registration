@@ -220,7 +220,9 @@ namespace ProductRegistration
         private string GetProductName()
         {
             string ProductName = Product.Text;
-            if (Version.Visible)
+            // Next gen is a rolling release - version number is always changing.
+            // We don't want to use a different product name for each different version.
+            if (Version.Visible && !ProductName.Contains("Next Gen"))
                 ProductName += Version.Text;
             return ProductName;
         }
@@ -297,6 +299,19 @@ namespace ProductRegistration
             throw new Exception("Cannot find product name : " + ProductName);
         }
 
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var address = new System.Net.Mail.MailAddress(email);
+                return address.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Return true if controls are valid.
         /// </summary>
@@ -314,7 +329,13 @@ namespace ProductRegistration
 
             if (MissingFields.Count > 0)
             {
-                ErrorLabel.Text = "Error. You haven't entered anything for these fields: " + MissingFields.Aggregate((x, y) => $"{x}, {y}"); ;
+                ErrorLabel.Text = "Error. You haven't entered anything for these fields: " + MissingFields.Aggregate((x, y) => $"{x}, {y}");
+                ErrorLabel.Visible = true;
+                return false;
+            }
+            if (!IsValidEmail(Email.Text))
+            {
+                ErrorLabel.Text = "\nEmail address is invalid.";
                 ErrorLabel.Visible = true;
                 return false;
             }
