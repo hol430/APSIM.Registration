@@ -133,13 +133,16 @@ namespace ProductRegistration
         /// </summary>
         private void UpdateDB()
         {
-            string url = "https://www.apsim.info/APSIM.Registration.Service/Registration.svc/AddNew" +
+            string url = "https://www.apsim.info/APSIM.Registration.Service/Registration.svc/AddRegistration" +
                             "?firstName=" + FirstName.Text +
                             "&lastName=" + LastName.Text +
                             "&organisation=" + Organisation.Text +
                             "&country=" + Country.Text +
                             "&email=" + Email.Text +
-                            "&product=" + GetProductName();
+                            "&product=" + Product.Text +
+                            "&version=" + Version.Text +
+                            "&platform=" + GetPlatform() +
+                            "&type=Registration";
 
             WriteToLogFile("Updating DB. Request: " + url, MessageType.Info);
             try
@@ -227,6 +230,17 @@ namespace ProductRegistration
             return ProductName;
         }
 
+        private string GetPlatform()
+        {
+            if (Product.Text.Contains("Next Gen"))
+            {
+                if (Product.Text.Contains("Mac"))
+                    return "Mac";
+                if (Product.Text.Contains("Debian") || Product.Text.Contains("Linux"))
+                    return "Linux";
+            }
+            return "Windows";
+        }
 
         /// <summary>
         /// Return the password for the specified product.

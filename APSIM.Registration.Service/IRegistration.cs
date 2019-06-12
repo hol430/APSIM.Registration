@@ -59,7 +59,7 @@ namespace APSIM.Registration.Service
         /// <param name="product"></param>
         [OperationContract]
         [WebGet(UriTemplate = "/AddRegistration?firstName={firstName}&lastName={lastName}&organisation={organisation}" +
-                                  "&country={country}&email={email}&product={product}&version={version}&platform={platform}",
+                                  "&country={country}&email={email}&product={product}&version={version}&platform={platform}&type={type}",
                                   BodyStyle = WebMessageBodyStyle.WrappedRequest)]
         void AddRegistration(string firstName, string lastName, string organisation, string country, string email, string product, string version, string platform, string type);
     }
