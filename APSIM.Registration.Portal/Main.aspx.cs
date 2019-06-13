@@ -268,7 +268,7 @@ namespace ProductRegistration
 
         private string GetPlatform()
         {
-            if (Version.Text != null && Version.Text.Contains("Next Gen"))
+            if (Version.Visible && Version.Text != null && Version.Text.Contains("Next Gen"))
             {
                 if (Version.Text.Contains("Mac"))
                     return "Mac";
