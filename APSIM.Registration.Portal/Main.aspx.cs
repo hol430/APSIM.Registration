@@ -139,8 +139,8 @@ namespace ProductRegistration
                             "&organisation=" + Organisation.Text +
                             "&country=" + Country.Text +
                             "&email=" + Email.Text +
-                            "&product=" + Product.Text +
-                            "&version=" + Version.Text +
+                            "&product=" + GetRealProductName() +
+                            "&version=" + GetVersion() +
                             "&platform=" + GetPlatform() +
                             "&type=Registration";
 
@@ -155,7 +155,6 @@ namespace ProductRegistration
                 throw new Exception("Encountered an error while writing to DB.", error);
             }
         }
-
 
         /// <summary>
         /// Send an email to the user.
@@ -217,26 +216,63 @@ namespace ProductRegistration
         }
 
         /// <summary>
-        /// Return the user selected product name.
+        /// Return the user selected product name - e.g.
+        /// APSIMNext Generation (Mac)
+        /// APSIM7.9
+        /// Apsoil
         /// </summary>
-        /// <returns></returns>
         private string GetProductName()
         {
             string ProductName = Product.Text;
-            // Next gen is a rolling release - version number is always changing.
-            // We don't want to use a different product name for each different version.
-            if (Version.Visible && !ProductName.Contains("Next Gen"))
+            if (Version.Visible)
                 ProductName += Version.Text;
             return ProductName;
         }
 
+        /// <summary>
+        /// Gets the name of the product without version - e.g.
+        /// APSIM Next Generation
+        /// APSIM
+        /// Apsoil
+        /// </summary>
+        private string GetRealProductName()
+        {
+            if (Version.Visible && Version.Text != null && Version.Text.Contains("Next Gen"))
+                return "APSIM Next Generation";
+            return Product.Text;
+        }
+
+        /// <summary>
+        /// Gets the version of the latest released ApsimX build/upgrade.
+        /// </summary>
+        private string GetLatestApsimXVersion()
+        {
+            return WebUtilities.CallRESTService<string>("https://www.apsim.info/APSIM.Builds.Service/Builds.svc/GetLatestVersion");
+        }
+
+        /// <summary>
+        /// Gets the version of the selected product.
+        /// </summary>
+        private string GetVersion()
+        {
+            if (Version.Text != null && Version.Visible)
+            {
+                if (Version.Text.Contains("Next Gen"))
+                    return GetLatestApsimXVersion();
+
+                // apsim classic
+                return Version.Text;
+            }
+            return "1";
+        }
+
         private string GetPlatform()
         {
-            if (Product.Text.Contains("Next Gen"))
+            if (Version.Text != null && Version.Text.Contains("Next Gen"))
             {
-                if (Product.Text.Contains("Mac"))
+                if (Version.Text.Contains("Mac"))
                     return "Mac";
-                if (Product.Text.Contains("Debian") || Product.Text.Contains("Linux"))
+                if (Version.Text.Contains("Debian") || Product.Text.Contains("Linux"))
                     return "Linux";
             }
             return "Windows";
