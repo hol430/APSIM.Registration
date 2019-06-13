@@ -133,22 +133,16 @@ namespace ProductRegistration
         /// </summary>
         private void UpdateDB()
         {
-            string url = "http://www.apsim.info/APSIM.Registration.Service/Registration.svc/Add" +
+            string url = "https://www.apsim.info/APSIM.Registration.Service/Registration.svc/AddRegistration" +
                             "?firstName=" + FirstName.Text +
                             "&lastName=" + LastName.Text +
                             "&organisation=" + Organisation.Text +
-                            "&address1=" + Address1.Text +
-                            "&city=" + City.Text +
-                            "&postcode=" + Postcode.Text +
                             "&country=" + Country.Text +
                             "&email=" + Email.Text +
-                            "&product=" + GetProductName() +
-                            "&ChangeDBPassword=" + GetValidPassword();
-
-            if (Address2.Text != "")
-                url += "&address2=" + Address2.Text;
-            if (State.Text != "")
-                url += "&state=" + State.Text;
+                            "&product=" + GetRealProductName() +
+                            "&version=" + GetVersion() +
+                            "&platform=" + GetPlatform() +
+                            "&type=Registration";
 
             WriteToLogFile("Updating DB. Request: " + url, MessageType.Info);
             try
@@ -161,7 +155,6 @@ namespace ProductRegistration
                 throw new Exception("Encountered an error while writing to DB.", error);
             }
         }
-
 
         /// <summary>
         /// Send an email to the user.
@@ -223,9 +216,11 @@ namespace ProductRegistration
         }
 
         /// <summary>
-        /// Return the user selected product name.
+        /// Return the user selected product name - e.g.
+        /// APSIMNext Generation (Mac)
+        /// APSIM7.9
+        /// Apsoil
         /// </summary>
-        /// <returns></returns>
         private string GetProductName()
         {
             string ProductName = Product.Text;
@@ -234,6 +229,54 @@ namespace ProductRegistration
             return ProductName;
         }
 
+        /// <summary>
+        /// Gets the name of the product without version - e.g.
+        /// APSIM Next Generation
+        /// APSIM
+        /// Apsoil
+        /// </summary>
+        private string GetRealProductName()
+        {
+            if (Version.Visible && Version.Text != null && Version.Text.Contains("Next Gen"))
+                return "APSIM Next Generation";
+            return Product.Text;
+        }
+
+        /// <summary>
+        /// Gets the version of the latest released ApsimX build/upgrade.
+        /// </summary>
+        private string GetLatestApsimXVersion()
+        {
+            return WebUtilities.CallRESTService<string>("https://www.apsim.info/APSIM.Builds.Service/Builds.svc/GetLatestVersion");
+        }
+
+        /// <summary>
+        /// Gets the version of the selected product.
+        /// </summary>
+        private string GetVersion()
+        {
+            if (Version.Text != null && Version.Visible)
+            {
+                if (Version.Text.Contains("Next Gen"))
+                    return GetLatestApsimXVersion();
+
+                // apsim classic
+                return Version.Text;
+            }
+            return "1";
+        }
+
+        private string GetPlatform()
+        {
+            if (Version.Visible && Version.Text != null && Version.Text.Contains("Next Gen"))
+            {
+                if (Version.Text.Contains("Mac"))
+                    return "Mac";
+                if (Version.Text.Contains("Debian") || Product.Text.Contains("Linux"))
+                    return "Linux";
+            }
+            return "Windows";
+        }
 
         /// <summary>
         /// Return the password for the specified product.
@@ -306,6 +349,19 @@ namespace ProductRegistration
             throw new Exception("Cannot find product name : " + ProductName);
         }
 
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var address = new System.Net.Mail.MailAddress(email);
+                return address.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Return true if controls are valid.
         /// </summary>
@@ -318,20 +374,18 @@ namespace ProductRegistration
                 MissingFields.Add("Last name");
             if (string.IsNullOrWhiteSpace(Organisation.Text))
                 MissingFields.Add("Organisation");
-            if (string.IsNullOrWhiteSpace(Address1.Text))
-                MissingFields.Add("Address1");
-            if (string.IsNullOrWhiteSpace(City.Text))
-                MissingFields.Add("City");
-            if (string.IsNullOrWhiteSpace(Postcode.Text))
-                MissingFields.Add("Postcode");
-            if (string.IsNullOrWhiteSpace(Country.Text))
-                MissingFields.Add("Country");
             if (string.IsNullOrWhiteSpace(Email.Text))
                 MissingFields.Add("Email");
 
             if (MissingFields.Count > 0)
             {
-                ErrorLabel.Text = "Error. You haven't entered anything for these fields: " + MissingFields.Aggregate((x, y) => $"{x}, {y}"); ;
+                ErrorLabel.Text = "Error. You haven't entered anything for these fields: " + MissingFields.Aggregate((x, y) => $"{x}, {y}");
+                ErrorLabel.Visible = true;
+                return false;
+            }
+            if (!IsValidEmail(Email.Text))
+            {
+                ErrorLabel.Text = "\nEmail address is invalid.";
                 ErrorLabel.Visible = true;
                 return false;
             }
