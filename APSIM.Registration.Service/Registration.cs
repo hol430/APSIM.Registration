@@ -9,6 +9,7 @@ namespace APSIM.Registration.Service
     using System.Runtime.Serialization;
     using System.ServiceModel;
     using System.Text;
+    using APSIM.Shared.Utilities;
 
     public class Registration : IRegistration
     {
@@ -29,14 +30,18 @@ namespace APSIM.Registration.Service
         public void Add(string firstName, string lastName, string organisation, string address1, string address2,
                     string city, string state, string postcode, string country, string email, string product)
         {
-            string sql = "INSERT INTO Registrations (Date, FirstName, LastName, Organisation, Address1, Address2, City, State, Postcode, Country, Email, Product) " +
-                            "VALUES (@Date, @FirstName, @LastName, @Organisation, @Address1, @Address2, @City, @State, @Postcode, @Country, @Email, @Product)";
+            string sql = "INSERT INTO Registrations (Date, FirstName, LastName, Organisation, Country, Email, Product, Version, Platform, Type) " +
+                            "VALUES (@Date, @FirstName, @LastName, @Organisation, @Country, @Email, @Product, @Version, @Platform, @Type)";
 
             // Address2 and state are optional so check for them and give default values.
             if (address2 == null || address2 == "")
                 address2 = "-";
             if (state == null || state == "")
                 state = "-";
+
+            if (!Constants.Countries.Contains(country))
+                return;
+                //throw new Exception($"Invalid country name '{country}'");
 
             using (SqlConnection connection = Open())
             {
@@ -46,14 +51,89 @@ namespace APSIM.Registration.Service
                     command.Parameters.Add(new SqlParameter("@FirstName", firstName));
                     command.Parameters.Add(new SqlParameter("@LastName", lastName));
                     command.Parameters.Add(new SqlParameter("@Organisation", organisation));
-                    command.Parameters.Add(new SqlParameter("@Address1", address1));
-                    command.Parameters.Add(new SqlParameter("@Address2", address2));
-                    command.Parameters.Add(new SqlParameter("@City", city));
-                    command.Parameters.Add(new SqlParameter("@State", state));
-                    command.Parameters.Add(new SqlParameter("@Postcode", postcode));
                     command.Parameters.Add(new SqlParameter("@Country", country));
                     command.Parameters.Add(new SqlParameter("@Email", email));
                     command.Parameters.Add(new SqlParameter("@Product", product));
+                    command.Parameters.Add(new SqlParameter("@Version", "1"));
+                    command.Parameters.Add(new SqlParameter("@Platform", "Windows"));
+                    command.Parameters.Add(new SqlParameter("@Type", "Registration"));
+                    command.ExecuteNonQuery();
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add a upgrade registration into the database.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="organisation"></param>
+        /// <param name="country"></param>
+        /// <param name="email"></param>
+        /// <param name="product"></param>
+        public void AddNew(string firstName, string lastName, string organisation, string country, string email, string product)
+        {
+            string sql = "INSERT INTO Registrations (Date, FirstName, LastName, Organisation, Country, Email, Product, Version, Platform, Type) " +
+                            "VALUES (@Date, @FirstName, @LastName, @Organisation, @Country, @Email, @Product, @Version, @Platform, @Type)";
+
+            if (!Constants.Countries.Contains(country))
+                throw new Exception($"Invalid country name '{country}'");
+
+            using (SqlConnection connection = Open())
+            {
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add(new SqlParameter("@Date", DateTime.Now));
+                    command.Parameters.Add(new SqlParameter("@FirstName", firstName));
+                    command.Parameters.Add(new SqlParameter("@LastName", lastName));
+                    command.Parameters.Add(new SqlParameter("@Organisation", organisation));
+                    command.Parameters.Add(new SqlParameter("@Country", country));
+                    command.Parameters.Add(new SqlParameter("@Email", email));
+                    command.Parameters.Add(new SqlParameter("@Product", product));
+                    command.Parameters.Add(new SqlParameter("@Version", "1"));
+                    command.Parameters.Add(new SqlParameter("@Platform", "Windows"));
+                    command.Parameters.Add(new SqlParameter("@Type", "Registration"));
+                    command.ExecuteNonQuery();
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add a upgrade or registration into the database.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="organisation"></param>
+        /// <param name="country"></param>
+        /// <param name="email"></param>
+        /// <param name="product"></param>
+        /// <param name="version"></param>
+        /// <param name="platform"></param>
+        /// <param name="type"></param>
+        public void AddRegistration(string firstName, string lastName, string organisation, string country, string email, string product, string version, string platform, string type)
+        {
+            string sql = "INSERT INTO Registrations (Date, FirstName, LastName, Organisation, Country, Email, Product, Version, Platform, Type) " +
+                            "VALUES (@Date, @FirstName, @LastName, @Organisation, @Country, @Email, @Product, @Version, @Platform, @Type)";
+
+            if (!Constants.Countries.Contains(country))
+                throw new Exception($"Invalid country name '{country}'");
+
+            using (SqlConnection connection = Open())
+            {
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add(new SqlParameter("@Date", DateTime.Now));
+                    command.Parameters.Add(new SqlParameter("@FirstName", firstName));
+                    command.Parameters.Add(new SqlParameter("@LastName", lastName));
+                    command.Parameters.Add(new SqlParameter("@Organisation", organisation));
+                    command.Parameters.Add(new SqlParameter("@Country", country));
+                    command.Parameters.Add(new SqlParameter("@Email", email));
+                    command.Parameters.Add(new SqlParameter("@Product", product));
+                    command.Parameters.Add(new SqlParameter("@Version", version));
+                    command.Parameters.Add(new SqlParameter("@Platform", platform));
+                    command.Parameters.Add(new SqlParameter("@Type", type));
                     command.ExecuteNonQuery();
 
                 }

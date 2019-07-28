@@ -50,5 +50,34 @@ namespace APSIM.Registration.Service
         [WebGet(UriTemplate = "/Unsubscribe?email={email}",
                                   BodyStyle = WebMessageBodyStyle.WrappedRequest)]
         void Unsubscribe(string email);
+
+        /// Add a upgrade registration into the database.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="organisation"></param>
+        /// <param name="country"></param>
+        /// <param name="email"></param>
+        /// <param name="product"></param>
+        [OperationContract]
+        [WebGet(UriTemplate = "/AddNew?firstName={firstName}&lastName={lastName}&organisation={organisation}" +
+                                  "&country={country}&email={email}&product={product}",
+                                  BodyStyle = WebMessageBodyStyle.WrappedRequest)]
+        void AddNew(string firstName, string lastName, string organisation, string country, string email, string product);
+
+        /// <summary>
+        /// Add a upgrade or registration into the database.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="organisation"></param>
+        /// <param name="country"></param>
+        /// <param name="email"></param>
+        /// <param name="product"></param>
+        [OperationContract]
+        [WebGet(UriTemplate = "/AddRegistration?firstName={firstName}&lastName={lastName}&organisation={organisation}" +
+                                  "&country={country}&email={email}&product={product}&version={version}&platform={platform}&type={type}",
+                                  BodyStyle = WebMessageBodyStyle.WrappedRequest)]
+        void AddRegistration(string firstName, string lastName, string organisation, string country, string email, string product, string version, string platform, string type);
     }
 }
