@@ -32,5 +32,23 @@ namespace APSIM.Registration.Service
                                   BodyStyle = WebMessageBodyStyle.WrappedRequest)]
         void Add(string firstName, string lastName, string organisation, string address1, string address2,
                  string city, string state, string postcode, string country, string email, string product);
+
+        /// <summary>
+        /// Subscribe to the mailing list.
+        /// </summary>
+        /// <param name="email">Email address.</param>
+        [OperationContract]
+        [WebGet(UriTemplate = "/Subscribe?email={email}",
+                                  BodyStyle = WebMessageBodyStyle.WrappedRequest)]
+        void Subscribe(string email);
+
+        /// <summary>
+        /// Unsubscribe to the mailing list.
+        /// </summary>
+        /// <param name="email">Email address.</param>
+        [OperationContract]
+        [WebGet(UriTemplate = "/Unsubscribe?email={email}",
+                                  BodyStyle = WebMessageBodyStyle.WrappedRequest)]
+        void Unsubscribe(string email);
     }
 }
