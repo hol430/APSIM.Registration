@@ -160,6 +160,24 @@ namespace ProductRegistration
             {
                 throw new Exception("Encountered an error while writing to DB.", error);
             }
+
+            // Subscribe if subscribe checkbox is checked.
+            if (ChkSubscribe.Checked)
+            {
+                url = $"https://www.apsim.info/APSIM.Registration.Service/Registration.svc/Subscribe?email={Email.Text}";
+                WriteToLogFile("Subscribing to mailing list. Request: " + url, MessageType.Info);
+                try
+                {
+                    WebUtilities.CallRESTService<object>(url);
+                    WriteToLogFile("Subscribed to mailing list", MessageType.Info);
+                }
+                catch (Exception err)
+                {
+                    // For now, don't let a failed subscription cause the entire process to fail.
+                    WriteToLogFile(err.ToString(), MessageType.Error);
+                    //throw new Exception("Encountered an error while subscribing to mailing list.", err);
+                }
+            }
         }
 
 
@@ -170,50 +188,47 @@ namespace ProductRegistration
         {
             try
             {
-                System.Net.Mail.MailMessage Mail = new System.Net.Mail.MailMessage();
-                Mail.From = new System.Net.Mail.MailAddress("no-reply@apsim.info");
-                Mail.To.Add(Email.Text);
-                Mail.Subject = "APSIM Software Non-Commercial Licence";
-                Mail.IsBodyHtml = true;
+                System.Net.Mail.MailMessage email = new System.Net.Mail.MailMessage();
+                email.From = new System.Net.Mail.MailAddress("no-reply@apsim.info");
+                email.To.Add(Email.Text);
+                email.Subject = "APSIM Software Non-Commercial Licence";
+                email.IsBodyHtml = true;
 
-                string MailBodyFile = Path.Combine(Request.PhysicalApplicationPath, "EmailBody.html");
+                string mailBodyFile = Path.Combine(Request.PhysicalApplicationPath, "EmailBody.html");
+                string body = File.ReadAllText(mailBodyFile);
 
-                StreamReader In = new StreamReader(MailBodyFile);
-                string Body = In.ReadToEnd();
-                string DownloadURL = GetDownloadURL();
-                WriteToLogFile($"Download URL='{DownloadURL}'", MessageType.Info);
-                Body = Body.Replace("$DownloadURL$", DownloadURL);
-                Body = Body.Replace("$PASSWORD$", GetProductPassword());
+                string downloadURL = GetDownloadURL();
+                WriteToLogFile($"Download URL='{downloadURL}'", MessageType.Info);
+                body = body.Replace("$DownloadURL$", downloadURL);
+                body = body.Replace("$PASSWORD$", GetProductPassword());
 
                 if (GetProductVersion() <= 73 || Version.Text.Contains("Next Generation"))
                 {
                     // APSIM 7.3 or earlier.
-                    Body = Body.Replace("$MSI$", "");
+                    body = body.Replace("$MSI$", "");
                 }
                 else
                 {
-                    string DownloadMSI = Path.ChangeExtension(DownloadURL, ".msi");
+                    string DownloadMSI = Path.ChangeExtension(downloadURL, ".msi");
 
-                    Body = Body.Replace("$MSI$", "<p>To download a version of APSIM that doesn't check for the required Microsoft " +
+                    body = body.Replace("$MSI$", "<p>To download a version of APSIM that doesn't check for the required Microsoft " +
                                                  "runtime libraries <a href=" + DownloadMSI + ">click here</a>. This can be useful " +
                                                  "when APSIM won't install because it thinks the required runtimes aren't present.</p>");
                 }
 
+                email.Body = body;
 
-                Mail.Body = Body;
-                In.Close();
-
-                string AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "APSIM_NonCommercial_RD_licence.pdf");
-                Mail.Attachments.Add(new System.Net.Mail.Attachment(AttachmentFileName));
-                AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "Guide to Referencing APSIM in Publications.pdf");
-                Mail.Attachments.Add(new System.Net.Mail.Attachment(AttachmentFileName));
+                string attachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "APSIM_NonCommercial_RD_licence.pdf");
+                email.Attachments.Add(new System.Net.Mail.Attachment(attachmentFileName));
+                attachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "Guide to Referencing APSIM in Publications.pdf");
+                email.Attachments.Add(new System.Net.Mail.Attachment(attachmentFileName));
 
                 string[] creds = File.ReadAllLines(@"D:\Websites\email.txt");
 
                 System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient(creds[0]);
                 smtp.Port = Convert.ToInt32(creds[1]);
                 smtp.Credentials = new System.Net.NetworkCredential(creds[2], creds[3]);
-                smtp.Send(Mail);
+                smtp.Send(email);
                 WriteToLogFile($"Successfully sent email to '{Email.Text}'.", MessageType.Info);
             }
             catch (Exception error)

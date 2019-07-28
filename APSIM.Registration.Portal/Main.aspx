@@ -319,13 +319,18 @@
             <asp:TableCell runat="server"><asp:TextBox ID="Email" runat="server" Width="400px"></asp:TextBox></asp:TableCell>
          </asp:TableRow>
       </asp:Table>
+      <asp:CheckBox ID="ChkSubscribe" runat="server" Text ="The APSIM Initiative will forward updates on APSIM-related developments and improvements as well as the upcoming APSIM-related events including training workshops." />
+      <br />
+      <br />
       <asp:Button ID="YesButton" runat="server" Text="Yes I agree, begin download" onclick="YesButton_Click" Width="238px" />
       <asp:Button ID="NoButton" runat="server" Text="No I don't agree, go back" 
             onclick="NoButton_Click" /><br />
       <asp:Label ID="CompleteLabel" runat="server" Text="            " Font-Bold="True" 
          ForeColor="#0066FF"></asp:Label>
       </form>
-      <asp:Label runat="server">Terms:</asp:Label>
+      <br />
+      <br />
+      <asp:Label style="clear: both" runat="server">Terms:</asp:Label>
       <asp:Table 
          ID="Table2" runat="server" Height="100px" Width="836px"
          EnableTheming="True">
