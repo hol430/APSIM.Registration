@@ -51,6 +51,7 @@ namespace APSIM.Registration.Service
                                   BodyStyle = WebMessageBodyStyle.WrappedRequest)]
         void Unsubscribe(string email);
 
+        /// <summary>
         /// Add a upgrade registration into the database.
         /// </summary>
         /// <param name="firstName"></param>
