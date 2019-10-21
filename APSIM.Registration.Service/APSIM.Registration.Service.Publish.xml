@@ -1,10 +1,21 @@
 <publishData>
   <publishTarget publishUrl="ftp://www.apsim.info/APSIM.Registration.Service">
-    <file relUrl="bin/APSIM.Registration.Service.pdb" publishTime="06/05/2018 09:29:57" />
-    <file relUrl="bin/APSIM.Registration.Service.dll" publishTime="06/05/2018 09:29:57" />
-    <file relUrl="bin/APSIM.Registration.Service.dll.config" publishTime="06/05/2018 09:29:53" />
-    <file relUrl="Web.config" publishTime="06/05/2018 09:29:53" />
-    <file relUrl="Registration.svc" publishTime="02/10/2016 11:20:31" />
-    <file relUrl="APSIM.Registration.Service.Registration.svc" publishTime="06/05/2018 09:30:04" />
+    <file relUrl="Web.config" publishTime="07/29/2019 09:14:32" />
+    <file relUrl="bin/FirebirdSql.Data.FirebirdClient.pdb" publishTime="07/11/2018 14:11:46" />
+    <file relUrl="bin/DocumentFormat.OpenXml.dll" publishTime="06/06/2017 22:59:22" />
+    <file relUrl="bin/ExcelDataReader.xml" publishTime="02/04/2018 01:44:46" />
+    <file relUrl="bin/APSIM.Registration.Service.pdb" publishTime="07/29/2019 10:13:51" />
+    <file relUrl="bin/APSIM.Registration.Service.dll" publishTime="07/29/2019 10:13:51" />
+    <file relUrl="bin/APSIM.Shared.pdb" publishTime="07/29/2019 10:13:50" />
+    <file relUrl="bin/APSIM.Registration.Service.dll.config" publishTime="07/29/2019 09:14:32" />
+    <file relUrl="bin/ExcelDataReader.dll" publishTime="02/04/2018 01:44:46" />
+    <file relUrl="Registration.svc" publishTime="02/21/2018 07:44:12" />
+    <file relUrl="bin/FirebirdSql.Data.FirebirdClient.dll" publishTime="07/11/2018 14:11:46" />
+    <file relUrl="bin/APSIM.Shared.xml" publishTime="07/29/2019 10:13:50" />
+    <file relUrl="bin/DocumentFormat.OpenXml.xml" publishTime="06/06/2017 15:59:14" />
+    <file relUrl="bin/APSIM.Shared.dll" publishTime="07/29/2019 10:13:50" />
+    <file relUrl="bin/ExcelDataReader.DataSet.dll" publishTime="02/04/2018 01:44:48" />
+    <file relUrl="bin/ExcelDataReader.DataSet.xml" publishTime="02/04/2018 01:44:48" />
+    <file relUrl="APSIM.Registration.Service.Registration.svc" publishTime="07/29/2019 10:13:52" />
   </publishTarget>
 </publishData>
