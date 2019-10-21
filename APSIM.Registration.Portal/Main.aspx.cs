@@ -133,7 +133,7 @@ namespace ProductRegistration
         /// </summary>
         private void UpdateDB()
         {
-            string url = "https://www.apsim.info/APSIM.Registration.Service/Registration.svc/AddRegistration" +
+            string url = "https://apsimdev.apsim.info/APSIM.Registration.Service/Registration.svc/AddRegistration" +
                             "?firstName=" + FirstName.Text +
                             "&lastName=" + LastName.Text +
                             "&organisation=" + Organisation.Text +
@@ -247,7 +247,7 @@ namespace ProductRegistration
         /// </summary>
         private string GetLatestApsimXVersion()
         {
-            return WebUtilities.CallRESTService<string>("https://www.apsim.info/APSIM.Builds.Service/Builds.svc/GetLatestVersion");
+            return WebUtilities.CallRESTService<string>("https://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetLatestVersion");
         }
 
         /// <summary>
@@ -331,7 +331,7 @@ namespace ProductRegistration
             {
                 string st = ProductName;
                 string operatingSystem = StringUtilities.SplitOffBracketedValue(ref st, '(', ')');
-                string url = "http://www.apsim.info/APSIM.Builds.Service/Builds.svc/GetURLOfLatestVersion?operatingSystem=" + operatingSystem;
+                string url = "http://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetURLOfLatestVersion?operatingSystem=" + operatingSystem;
                 return WebUtilities.CallRESTService<string>(url);
             }
             ProductName = ProductName.Replace("?", "");
