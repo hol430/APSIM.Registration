@@ -164,7 +164,7 @@ namespace ProductRegistration
             try
             {
                 System.Net.Mail.MailMessage Mail = new System.Net.Mail.MailMessage();
-                Mail.From = new System.Net.Mail.MailAddress("no-reply@apsim.info");
+                Mail.From = new System.Net.Mail.MailAddress("no-reply@www.apsim.info");
                 Mail.To.Add(Email.Text);
                 Mail.Subject = "APSIM Software Non-Commercial Licence";
                 Mail.IsBodyHtml = true;
