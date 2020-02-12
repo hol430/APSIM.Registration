@@ -140,6 +140,36 @@ namespace APSIM.Registration.Service
             }
         }
 
+        /// <summary>
+        /// Check if a user with a given email address has previously
+        /// accepted the licence terms and conditions.
+        /// </summary>
+        /// <param name="email">Email address.</param>
+        public bool IsRegistered(string email)
+        {
+            string sql = @"SELECT TOP 1 [Date]
+FROM [Registrations]
+WHERE [Email] = @Email
+ORDER BY [Date] DESC;";
+            using (SqlConnection connection = Open())
+            {
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add(new SqlParameter("@Email", email));
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            DateTime date = (DateTime)reader["Date"];
+                            return date > DateTime.Now.AddYears(-3);
+                        }
+                        return false;
+                    }
+                }
+            }
+        }
+
         /// <summary>Return the valid password for this web service.</summary>
         private static string GetValidPassword()
         {
