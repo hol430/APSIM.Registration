@@ -62,5 +62,15 @@ namespace APSIM.Registration.Service
                                   "&country={country}&email={email}&product={product}&version={version}&platform={platform}&type={type}",
                                   BodyStyle = WebMessageBodyStyle.WrappedRequest)]
         void AddRegistration(string firstName, string lastName, string organisation, string country, string email, string product, string version, string platform, string type);
+
+        /// <summary>
+        /// Check if a user with a given email address has previously
+        /// accepted the licence terms and conditions.
+        /// </summary>
+        /// <param name="email">Email address.</param>
+        [OperationContract]
+        [WebGet(UriTemplate = "/IsRegistered?email={email}",
+                BodyStyle = WebMessageBodyStyle.WrappedRequest)]
+        bool IsRegistered(string email);
     }
 }
