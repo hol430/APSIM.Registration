@@ -22,7 +22,7 @@
          EnableTheming="True">
          <asp:TableRow ID="TableRow1" runat="server">
             <asp:TableCell ID="TableCell1" runat="server">Product to download:</asp:TableCell>
-            <asp:TableCell ID="TableCell2" runat="server"><asp:DropDownList ID="Product" runat="server" Width="200px" AutoPostBack="True"/></asp:TableCell>
+            <asp:TableCell ID="TableCell2" runat="server"><asp:DropDownList ID="Product" runat="server" Width="200px"/></asp:TableCell>
          </asp:TableRow>
          <asp:TableRow runat="server">
             <asp:TableCell ID="VersionLabel" Text="Version:" runat="server"> </asp:TableCell>
@@ -57,21 +57,21 @@
             <asp:TableCell runat="server"><asp:TextBox ID="Email" runat="server" Width="400px"></asp:TextBox></asp:TableCell>
          </asp:TableRow>
          <asp:TableRow runat="server">
-             <asp:TableCell runat="server">License type:</asp:TableCell>
+             <asp:TableCell runat="server">Licence type:</asp:TableCell>
              <asp:TableCell runat="server" Width="400px">
                  <asp:RadioButton id="radioNonCom" Text="Non-Commercial" GroupName="LicenseType" Checked="true" autocomplete="off" runat="server"></asp:RadioButton>
                  <asp:RadioButton id="radioCom" Text="Commercial" GroupName="LicenseType" autocomplete="off" runat="server"></asp:RadioButton>
              </asp:TableCell>
          </asp:TableRow>
-         <asp:TableRow ID="rowLicensorName" runat="server">
+         <asp:TableRow class="commercialInput" runat="server">
              <asp:TableCell>Licensor name:</asp:TableCell>
              <asp:TableCell><asp:TextBox ID="LicensorName" runat="server" Width="400px" /></asp:TableCell>
          </asp:TableRow>
-         <asp:TableRow ID="rowLicensorEmail" runat="server">
+         <asp:TableRow class="commercialInput" runat="server">
              <asp:TableCell>Licensor email:</asp:TableCell>
              <asp:TableCell><asp:TextBox ID="LicensorEmail" runat="server" Width="400px" /></asp:TableCell>
          </asp:TableRow>
-         <asp:TableRow ID="rowTurnover" runat="server">
+         <asp:TableRow class="commercialInput" runat="server">
              <asp:TableCell>Contractor Turnover:</asp:TableCell>
              <asp:TableCell runat="server">
                  <asp:RadioButton GroupName="Turnover" ID="radioLessThan2Mil" Text="<$2 million" runat="server" />
@@ -79,6 +79,12 @@
                  <asp:RadioButton GroupName="Turnover" ID="radioBigBucks" Text=">$40 million" runat="server" />
              </asp:TableCell>
          </asp:TableRow>
+          <asp:TableRow CssClass="commercialInput" runat="server">
+              <asp:TableCell>Company Registration Number:</asp:TableCell>
+              <asp:TableCell>
+                  <asp:TextBox ID="companyID" Width="400px" runat="server"></asp:TextBox>
+              </asp:TableCell>
+          </asp:TableRow>
       </asp:Table>
       <div>
           <asp:Button ID="YesButton" runat="server" Text="Yes I agree, begin download" onclick="YesButton_Click" Width="238px" />

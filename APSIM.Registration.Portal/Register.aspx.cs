@@ -7,6 +7,10 @@ using System.Web.UI.WebControls;
 using System.IO;
 using APSIM.Shared.Utilities;
 using System.Reflection;
+using System.Net.Mail;
+using System.Text;
+using System.Data;
+using System.Net;
 
 namespace ProductRegistration
 {
@@ -55,36 +59,7 @@ namespace ProductRegistration
                 Versions.Add("Next Generation (Mac)");
                 foreach (string VersionString in Versions)
                     Version.Items.Add(VersionString);
-                
-                Product.SelectedIndexChanged += new EventHandler(UpdateForm);
             }
-            UpdateForm(null, null);
-        }
-
-
-        /// <summary>
-        /// Update the controls that change depending on the state of the product dropdown.
-        /// </summary>
-        void UpdateForm(object sender, EventArgs e)
-        {
-            string FileName;
-            if (Product.Text == "APSIM")
-            {
-                Version.Visible = true;
-                FileName = "APSIM_NonCommercial_RD_licence.htm";
-            }
-            else
-            {
-                Version.Visible = false;
-                FileName = "OtherDisclaimer.html";
-            }
-            Terms.Text = "<iframe height=\"300px\" width=\"700px\" src=\"" + FileName + "\"/>";
-            
-            //StreamReader In = new StreamReader(FileName);
-            //Terms.Text = "<div style=\"height: 300px; width: 700px; overflow: auto; position:relative; border: solid; border-width:thin; border-color: #CCCCCC\">" + In.ReadToEnd() + "</div>";
-            //Terms.Text = In.ReadToEnd();
-            //Terms.Text = "<div><iframe src=\"APSIMDisclaimer.html\"/></div>";
-            //In.Close();
         }
 
         /// <summary>
@@ -98,6 +73,11 @@ namespace ProductRegistration
                 {
                     WriteToLogFile("User has submitted form with valid information.", MessageType.Info);
                     UpdateDB();
+                    if (radioCom.Checked)
+                    {
+                        WriteToLogFile("User is registering under a commercial license. Sending invoice email to Sarah...", MessageType.Info);
+                        SendInvoiceEmail();
+                    }
                     string RedirectURL;
                     if (GetProductName().ToLower().Contains("apsim"))
                     {
@@ -152,6 +132,40 @@ namespace ProductRegistration
             {
                 throw new Exception("Encountered an error while writing to DB.", error);
             }
+        }
+
+        private void SendInvoiceEmail()
+        {
+            MailMessage email = new MailMessage();
+            email.From = new MailAddress("no-reply@www.apsim.info");
+            email.To.Add("drew.holzworth@csiro.au"); // debug
+            email.To.Add("apsim@csiro.au"); // prod
+            email.Subject = "APSIM Commercial Registration Notification";
+            email.IsBodyHtml = true;
+
+            StringBuilder body = new StringBuilder();
+            body.AppendLine("<p>This is an automated notification of an APSIM commercial license agreement. Details below.<p>");
+            body.AppendLine("<table>");
+            body.AppendLine($"<tr><td>Product</td><td>{GetRealProductName()}</td>");
+            body.AppendLine($"<tr><td>Version</td><td>{GetVersion()}</td>");
+            body.AppendLine($"<tr><td>First name</td><td>{FirstName.Text}</td>");
+            body.AppendLine($"<tr><td>Last name</td><td>{LastName.Text}</td>");
+            body.AppendLine($"<tr><td>Organisation</td><td>{Organisation.Text}</td>");
+            body.AppendLine($"<tr><td>Country</td><td>{Country.Text}</td>");
+            body.AppendLine($"<tr><td>Email</td><td>{Email.Text}</td>");
+            body.AppendLine($"<tr><td>Licence type</td><td>{GetLicenseType()}</td>");
+            body.AppendLine($"<tr><td>Licensor name</td><td>{LicensorName.Text}</td>");
+            body.AppendLine($"<tr><td>Licensor email</td><td>{LicensorEmail.Text}</td>");
+            body.AppendLine($"<tr><td>Contractor turnover</td><td>{GetContractorTurnover()}</td>");
+            body.AppendLine($"<tr><td>Company registration number</td><td>{companyID.Text}</td>");
+            body.AppendLine("</table>");
+
+            email.Body = body.ToString();
+            string[] creds = File.ReadAllLines(@"C:\APSIM.PerformanceTests\email.txt");
+            SmtpClient smtp = new SmtpClient(creds[0]);
+            smtp.Port = Convert.ToInt32(creds[1]);
+            smtp.Credentials = new NetworkCredential(creds[2], creds[3]);
+            smtp.Send(email);
         }
 
         /// <summary>
@@ -246,6 +260,23 @@ namespace ProductRegistration
         private string GetLatestApsimXVersion()
         {
             return WebUtilities.CallRESTService<string>("https://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetLatestVersion");
+        }
+
+        private object GetContractorTurnover()
+        {
+            if (radioLessThan2Mil.Checked)
+                return radioLessThan2Mil.Text;
+            if (radio2ToFortyMil.Checked)
+                return radio2ToFortyMil.Text;
+            if (radioBigBucks.Checked)
+                return radioBigBucks.Text;
+
+            return "Unspecified";
+        }
+
+        private object GetLicenseType()
+        {
+            return radioNonCom.Checked ? "Non-Commercial" : "Commercial";
         }
 
         /// <summary>
@@ -382,6 +413,8 @@ namespace ProductRegistration
                 MissingFields.Add("Licensor Email");
             if (! (radio2ToFortyMil.Checked || radio2ToFortyMil.Checked || radioBigBucks.Checked) )
                 MissingFields.Add("Contractor Turnover");
+            if (string.IsNullOrWhiteSpace(companyID.Text))
+                MissingFields.Add("Company Registration Number");
 
             if (MissingFields.Count > 0)
             {

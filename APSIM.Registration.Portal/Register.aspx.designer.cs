@@ -159,15 +159,6 @@ namespace ProductRegistration
         protected global::System.Web.UI.WebControls.RadioButton radioCom;
 
         /// <summary>
-        /// rowLicensorName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TableRow rowLicensorName;
-
-        /// <summary>
         /// LicensorName control.
         /// </summary>
         /// <remarks>
@@ -177,15 +168,6 @@ namespace ProductRegistration
         protected global::System.Web.UI.WebControls.TextBox LicensorName;
 
         /// <summary>
-        /// rowLicensorEmail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TableRow rowLicensorEmail;
-
-        /// <summary>
         /// LicensorEmail control.
         /// </summary>
         /// <remarks>
@@ -193,15 +175,6 @@ namespace ProductRegistration
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox LicensorEmail;
-
-        /// <summary>
-        /// rowTurnover control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TableRow rowTurnover;
 
         /// <summary>
         /// radioLessThan2Mil control.
@@ -229,6 +202,15 @@ namespace ProductRegistration
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton radioBigBucks;
+
+        /// <summary>
+        /// companyID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox companyID;
 
         /// <summary>
         /// YesButton control.
