@@ -1,0 +1,14 @@
+﻿#tblDownloads {
+}
+
+#tblDownloads th, #tblDownloads td {
+    padding: 0 5px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

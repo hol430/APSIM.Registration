@@ -1,14 +1,9 @@
-
-/*nb. #00000 is black (0red, 0green, 0blue) */
-
-
 /*sv- 	In the documentation section of the wiki there are alot of <p> tags that use
 	a class with Title2 or Normal. So I have added the formatting for them below.
 	nb. 	I am diliberately not handling .Normal class because if the user just types
 		plain text, I don't want it to be formated differently to the html
 		stuff I copied into the wiki. So I leave it as is.
 */
-
 
 /*sv- taken from ApsimWebStyles.css */
 body  {
