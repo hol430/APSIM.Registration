@@ -70,6 +70,7 @@
     <Content Include="ApsimWebStyle.css" />
     <Content Include="APSIM_NonCommercial_RD_licence.htm" />
     <Content Include="Downloads.aspx" />
+    <Content Include="Downloads.css" />
     <Content Include="EmailBody.html" />
     <Content Include="Main.aspx" />
     <Content Include="OtherDisclaimer.html" />

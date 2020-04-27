@@ -13,7 +13,7 @@ namespace APSIM.Registration.Portal
         /// <summary>
         /// Function which will fetch available versions of this product.
         /// </summary>
-        private Func<List<ProductVersion>> GetAvailableVersions;
+        private Func<int, List<ProductVersion>> GetAvailableVersions;
 
         /// <summary>
         /// Name of the product.
@@ -23,9 +23,9 @@ namespace APSIM.Registration.Portal
         /// <summary>
         /// Function which will fetch available versions of this product.
         /// </summary>
-        public List<ProductVersion> GetVersions()
+        public List<ProductVersion> GetVersions(int n)
         {
-            return GetAvailableVersions();
+            return GetAvailableVersions(n);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace APSIM.Registration.Portal
         /// </summary>
         /// <param name="name">Name of the product.</param>
         /// <param name="getVersions">Function which will fetch available versions of this product.</param>
-        public Product(string name, Func<List<ProductVersion>> getVersions)
+        public Product(string name, Func<int, List<ProductVersion>> getVersions)
         {
             Name = name;
             GetAvailableVersions = getVersions;

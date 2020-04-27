@@ -72,7 +72,7 @@
              <asp:TableCell><asp:TextBox ID="LicensorEmail" runat="server" Width="400px" /></asp:TableCell>
          </asp:TableRow>
          <asp:TableRow class="commercialInput" runat="server">
-             <asp:TableCell>Contractor Turnover:</asp:TableCell>
+             <asp:TableCell>Company Sales/Turnover:</asp:TableCell>
              <asp:TableCell runat="server">
                  <asp:RadioButton GroupName="Turnover" ID="radioLessThan2Mil" Text="<$2 million" runat="server" />
                  <asp:RadioButton GroupName="Turnover" ID="radio2ToFortyMil" Text="$2-40 million" runat="server" />
@@ -83,6 +83,12 @@
               <asp:TableCell>Company Registration Number:</asp:TableCell>
               <asp:TableCell>
                   <asp:TextBox ID="companyID" Width="400px" runat="server"></asp:TextBox>
+              </asp:TableCell>
+          </asp:TableRow>
+          <asp:TableRow CssClass="commercialInput" runat="server">
+              <asp:TableCell runat="server">Street Address:</asp:TableCell>
+              <asp:TableCell runat="server">
+                  <asp:TextBox ID="companyAddress" TextMode="MultiLine" Rows="2" Width="400" runat="server"></asp:TextBox>
               </asp:TableCell>
           </asp:TableRow>
       </asp:Table>

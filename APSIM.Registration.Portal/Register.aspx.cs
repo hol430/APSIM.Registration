@@ -83,7 +83,7 @@ namespace ProductRegistration
                     {
                         WriteToLogFile("User wants to download APSIM.", MessageType.Info);
                         SendEmail();
-                        RedirectURL = "Thankyou.aspx";
+                        RedirectURL = "Downloads.aspx";
                     }
                     else
                     {
@@ -138,13 +138,16 @@ namespace ProductRegistration
         {
             MailMessage email = new MailMessage();
             email.From = new MailAddress("no-reply@www.apsim.info");
+#if DEBUG
             email.To.Add("drew.holzworth@csiro.au"); // debug
+#else
             email.To.Add("apsim@csiro.au"); // prod
+#endif
             email.Subject = "APSIM Commercial Registration Notification";
             email.IsBodyHtml = true;
 
             StringBuilder body = new StringBuilder();
-            body.AppendLine("<p>This is an automated notification of an APSIM commercial license agreement. Details below.<p>");
+            body.AppendLine("<p>This is an automated notification of an APSIM commercial license agreement.<p>");
             body.AppendLine("<table>");
             body.AppendLine($"<tr><td>Product</td><td>{GetRealProductName()}</td>");
             body.AppendLine($"<tr><td>Version</td><td>{GetVersion()}</td>");
@@ -158,10 +161,11 @@ namespace ProductRegistration
             body.AppendLine($"<tr><td>Licensor email</td><td>{LicensorEmail.Text}</td>");
             body.AppendLine($"<tr><td>Contractor turnover</td><td>{GetContractorTurnover()}</td>");
             body.AppendLine($"<tr><td>Company registration number</td><td>{companyID.Text}</td>");
+            body.AppendLine($"<tr><td>Company Address</td><td>{companyAddress.Text}</td>");
             body.AppendLine("</table>");
 
             email.Body = body.ToString();
-            string[] creds = File.ReadAllLines(@"C:\APSIM.PerformanceTests\email.txt");
+            string[] creds = File.ReadAllLines(@"D:\Websites\email.txt");
             SmtpClient smtp = new SmtpClient(creds[0]);
             smtp.Port = Convert.ToInt32(creds[1]);
             smtp.Credentials = new NetworkCredential(creds[2], creds[3]);
@@ -407,14 +411,19 @@ namespace ProductRegistration
                 MissingFields.Add("Email");
             if (! (radioNonCom.Checked || radioCom.Checked) )
                 MissingFields.Add("License Type");
-            if (string.IsNullOrWhiteSpace(LicensorName.Text))
-                MissingFields.Add("Licensor Name");
-            if (string.IsNullOrWhiteSpace(LicensorEmail.Text))
-                MissingFields.Add("Licensor Email");
-            if (! (radio2ToFortyMil.Checked || radio2ToFortyMil.Checked || radioBigBucks.Checked) )
-                MissingFields.Add("Contractor Turnover");
-            if (string.IsNullOrWhiteSpace(companyID.Text))
-                MissingFields.Add("Company Registration Number");
+            if (radioCom.Checked)
+            {
+                if (string.IsNullOrWhiteSpace(LicensorName.Text))
+                    MissingFields.Add("Licensor Name");
+                if (string.IsNullOrWhiteSpace(LicensorEmail.Text))
+                    MissingFields.Add("Licensor Email");
+                if (!(radioLessThan2Mil.Checked || radio2ToFortyMil.Checked || radioBigBucks.Checked))
+                    MissingFields.Add("Contractor Turnover");
+                if (string.IsNullOrWhiteSpace(companyID.Text))
+                    MissingFields.Add("Company Registration Number");
+                if (string.IsNullOrEmpty(companyAddress.Text))
+                    MissingFields.Add("Company Address");
+            }
 
             if (MissingFields.Count > 0)
             {
