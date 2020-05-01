@@ -2,7 +2,11 @@
 }
 
 #tblDownloads th, #tblDownloads td {
-    padding: 0 5px;
+    padding: 5px 5px;
+}
+
+#tblDownloads tr:nth-child(odd) {
+    background-color: #eee;
 }
 
 a {

@@ -9,40 +9,23 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <h1>APSIM Downloads</h1>
+        <h1>APSIM Upgrades</h1>
         <div>
-            <table>
-                <tr>
-                    <td>
-                        <label>Product:</label>
-
-                    </td>
-                    <td>
-                        <asp:DropDownList id="productsDropDown" OnSelectedIndexChanged="SelectedProductChanged" AutoPostBack="true" runat="server" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Max number of rows:</label>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="NumRowsTextBox" type="number" runat="server" AutoPostBack="True" ontextchanged="OnNumRowsChanged" >10</asp:TextBox>
-                    </td>
-                </tr>
-            </table>
-            <br />
-            <asp:Table id="tblDownloads" runat="server">
-                <asp:TableHeaderRow runat="server">
-                    <asp:TableHeaderCell runat="server">Version Name</asp:TableHeaderCell>
-                    <asp:TableHeaderCell runat="server">Version Number</asp:TableHeaderCell>
-                    <asp:TableHeaderCell runat="server">Release Date</asp:TableHeaderCell>
-                    <asp:TableHeaderCell runat="server">Download Link</asp:TableHeaderCell>
-                </asp:TableHeaderRow>
-            </asp:Table>
-            <br />
-            <br />
-            <asp:Label ID="downloadLink" runat="server" />
+            <label>Product:</label>
+            <asp:DropDownList id="productsDropDown" OnSelectedIndexChanged="SelectedProductChanged" AutoPostBack="true" runat="server" />
         </div>
+        <br />
+        <asp:Table id="tblDownloads" runat="server">
+            <asp:TableHeaderRow runat="server">
+                <asp:TableHeaderCell runat="server">Release Date</asp:TableHeaderCell>
+                <asp:TableHeaderCell runat="server">Release Number</asp:TableHeaderCell>
+                <asp:TableHeaderCell runat="server">Release Information</asp:TableHeaderCell>
+                <asp:TableHeaderCell runat="server">Download Link</asp:TableHeaderCell>
+            </asp:TableHeaderRow>
+        </asp:Table>
+        <br />
+        <label>Max number of rows:</label>
+        <asp:TextBox ID="NumRowsTextBox" type="number" runat="server" AutoPostBack="True" ontextchanged="OnNumRowsChanged" >10</asp:TextBox>
     </form>
 </body>
 </html>

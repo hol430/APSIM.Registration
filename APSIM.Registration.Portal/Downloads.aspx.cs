@@ -22,11 +22,6 @@ namespace APSIM.Registration.Portal
                     new Product("APSIM Classic", GetApsimClassicUpgrades),
                     new Product("APSIM Next Generation", GetApsimXUpgrades),
                     new Product("Apsoil", GetApsoilVersions),
-                    new Product("HowWet?", GetHowWetVersions),
-                    new Product("HowOften?", GetHowOftenVersions),
-                    new Product("HowMuch?", GetHowMuchVersions),
-                    new Product("HowLeaky?", GetHowLeakyVersions),
-                    new Product("Perfect", GetPerfectVersions),
                 };
             }
         }
@@ -83,6 +78,14 @@ namespace APSIM.Registration.Portal
             {
                 TableRow row = new TableRow();
 
+                TableCell releaseDate = new TableCell();
+                releaseDate.Text = version.ReleaseDate.ToString("yyyy-MM-dd");
+                row.Cells.Add(releaseDate);
+
+                TableCell versionNumber = new TableCell();
+                versionNumber.Text = version.Number;
+                row.Cells.Add(versionNumber);
+
                 TableCell versionName = new TableCell();
 
                 if (string.IsNullOrWhiteSpace(version.InfoLink))
@@ -96,16 +99,8 @@ namespace APSIM.Registration.Portal
                 }
                 row.Cells.Add(versionName);
 
-                TableCell versionNumber = new TableCell();
-                versionNumber.Text = version.Number;
-                row.Cells.Add(versionNumber);
-
-                TableCell releaseDate = new TableCell();
-                releaseDate.Text = version.ReleaseDate.ToString("yyyy-MM-dd");
-                row.Cells.Add(releaseDate);
-
                 HyperLink windowsLink = new HyperLink();
-                windowsLink.Text = "Windows x86_64";
+                windowsLink.Text = "Windows";
                 windowsLink.NavigateUrl = version.DownloadLinkWindows;
                 TableCell downloadCell = new TableCell();
                 downloadCell.Controls.Add(windowsLink);
@@ -114,7 +109,7 @@ namespace APSIM.Registration.Portal
                 {
                     downloadCell.Controls.Add(new Label() { Text = ", " });
                     HyperLink linuxLink = new HyperLink();
-                    linuxLink.Text = "Linux x86_64";
+                    linuxLink.Text = "Linux";
                     linuxLink.NavigateUrl = version.DownloadLinkLinux;
                     downloadCell.Controls.Add(linuxLink);
                 }
@@ -123,7 +118,7 @@ namespace APSIM.Registration.Portal
                 {
                     downloadCell.Controls.Add(new Label() { Text = ", " });
                     HyperLink macLink = new HyperLink();
-                    macLink.Text = "macOS x86_64";
+                    macLink.Text = "macOS";
                     macLink.NavigateUrl = version.DownloadLinkMac;
                     downloadCell.Controls.Add(macLink);
                 }
@@ -134,33 +129,6 @@ namespace APSIM.Registration.Portal
             }
 
             tblDownloads.Visible = true;
-        }
-
-        // fixme - need to add link to release notes and find a better way
-        // of grabbing release date/version info for perfect/howwet/etc.
-        private List<ProductVersion> GetPerfectVersions(int n)
-        {
-            return new List<ProductVersion>() { new ProductVersion("PERFECT", "", "", DateTime.Now, GetDownloadPath("PERFECT"), null, null) };
-        }
-
-        private List<ProductVersion> GetHowLeakyVersions(int n)
-        {
-            return new List<ProductVersion>() { new ProductVersion("HowLeaky", "2.18", "", new DateTime(2007, 10, 12), GetDownloadPath("HowLeaky"), null, null) };
-        }
-
-        private List<ProductVersion> GetHowMuchVersions(int n)
-        {
-            return new List<ProductVersion> { new ProductVersion("HowMuch", "", "", DateTime.Now, GetDownloadPath("HowMuch"), null, null)};
-        }
-
-        private List<ProductVersion> GetHowOftenVersions(int n)
-        {
-            return new List<ProductVersion>() { new ProductVersion("HowOften", "2.0.0.0", "", new DateTime(2004, 3, 1), GetDownloadPath("HowOften"), null, null) };
-        }
-
-        private List<ProductVersion> GetHowWetVersions(int n)
-        {
-            return new List<ProductVersion>() { new ProductVersion("HowWet", "2.10", "", new DateTime(1997, 2, 24), GetDownloadPath("HowWet"), null, null) };
         }
 
         private List<ProductVersion> GetApsoilVersions(int n)

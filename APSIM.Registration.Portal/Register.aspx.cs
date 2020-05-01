@@ -182,40 +182,46 @@ namespace ProductRegistration
                 System.Net.Mail.MailMessage Mail = new System.Net.Mail.MailMessage();
                 Mail.From = new System.Net.Mail.MailAddress("no-reply@www.apsim.info");
                 Mail.To.Add(Email.Text);
-                Mail.Subject = "APSIM Software Non-Commercial Licence";
+                if (radioCom.Checked)
+                    Mail.Subject = "APSIM Software Commercial Licence";
+                else
+                    Mail.Subject = "APSIM Software Non-Commercial Licence";
                 Mail.IsBodyHtml = true;
 
-                string MailBodyFile = Path.Combine(Request.PhysicalApplicationPath, "EmailBody.html");
+                string mailBodyFile = "EmailBody.html";
+                if (radioCom.Checked)
+                    mailBodyFile = "EmailBodyCommercial.html";
+                string body = File.ReadAllText(Path.Combine(Request.PhysicalApplicationPath, mailBodyFile));
 
-                StreamReader In = new StreamReader(MailBodyFile);
-                string Body = In.ReadToEnd();
                 string DownloadURL = GetDownloadURL();
                 WriteToLogFile($"Download URL='{DownloadURL}'", MessageType.Info);
-                Body = Body.Replace("$DownloadURL$", DownloadURL);
-                Body = Body.Replace("$PASSWORD$", GetProductPassword());
+                body = body.Replace("$DownloadURL$", DownloadURL);
+                body = body.Replace("$PASSWORD$", GetProductPassword());
 
                 if (GetProductVersion() <= 73 || Version.Text.Contains("Next Generation"))
                 {
                     // APSIM 7.3 or earlier.
-                    Body = Body.Replace("$MSI$", "");
+                    body = body.Replace("$MSI$", "");
                 }
                 else
                 {
                     string DownloadMSI = Path.ChangeExtension(DownloadURL, ".msi");
 
-                    Body = Body.Replace("$MSI$", "<p>To download a version of APSIM that doesn't check for the required Microsoft " +
+                    body = body.Replace("$MSI$", "<p>To download a version of APSIM that doesn't check for the required Microsoft " +
                                                  "runtime libraries <a href=" + DownloadMSI + ">click here</a>. This can be useful " +
                                                  "when APSIM won't install because it thinks the required runtimes aren't present.</p>");
                 }
 
 
-                Mail.Body = Body;
-                In.Close();
+                Mail.Body = body;
 
-                string AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "APSIM_NonCommercial_RD_licence.pdf");
-                Mail.Attachments.Add(new System.Net.Mail.Attachment(AttachmentFileName));
+
+                string licenceFileName = radioCom.Checked ? "APSIM_Commercial_Licence.pdf" : "APSIM_NonCommercial_RD_licence.pdf";
+                string AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, licenceFileName);
+                Mail.Attachments.Add(new Attachment(AttachmentFileName));
+                
                 AttachmentFileName = Path.Combine(Request.PhysicalApplicationPath, "Guide to Referencing APSIM in Publications.pdf");
-                Mail.Attachments.Add(new System.Net.Mail.Attachment(AttachmentFileName));
+                Mail.Attachments.Add(new Attachment(AttachmentFileName));
 
                 string[] creds = File.ReadAllLines(@"D:\Websites\email.txt");
 

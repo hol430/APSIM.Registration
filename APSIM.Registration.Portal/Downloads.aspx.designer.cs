@@ -33,15 +33,6 @@ namespace APSIM.Registration.Portal
         protected global::System.Web.UI.WebControls.DropDownList productsDropDown;
 
         /// <summary>
-        /// NumRowsTextBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox NumRowsTextBox;
-
-        /// <summary>
         /// tblDownloads control.
         /// </summary>
         /// <remarks>
@@ -51,12 +42,12 @@ namespace APSIM.Registration.Portal
         protected global::System.Web.UI.WebControls.Table tblDownloads;
 
         /// <summary>
-        /// downloadLink control.
+        /// NumRowsTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label downloadLink;
+        protected global::System.Web.UI.WebControls.TextBox NumRowsTextBox;
     }
 }

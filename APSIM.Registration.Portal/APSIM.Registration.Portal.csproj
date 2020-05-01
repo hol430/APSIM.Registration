@@ -68,10 +68,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApsimWebStyle.css" />
+    <Content Include="APSIM_Commercial_Licence.htm" />
     <Content Include="APSIM_NonCommercial_RD_licence.htm" />
     <Content Include="Downloads.aspx" />
     <Content Include="Downloads.css" />
     <Content Include="EmailBody.html" />
+    <Content Include="EmailBodyCommercial.html" />
     <Content Include="Main.aspx" />
     <Content Include="OtherDisclaimer.html" />
     <Content Include="Register.aspx" />
@@ -133,6 +135,8 @@
   <ItemGroup>
     <Content Include="Guide to Referencing APSIM in Publications.pdf" />
     <Content Include="APSIM_NonCommercial_RD_licence.rtf" />
+    <Content Include="APSIM_Commercial_Licence.docx" />
+    <Content Include="APSIM_Commercial_Licence.pdf" />
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
     <None Include="Properties\PublishProfiles\Publish.pubxml" />
   </ItemGroup>
