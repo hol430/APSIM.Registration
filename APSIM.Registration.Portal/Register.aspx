@@ -92,6 +92,10 @@
               </asp:TableCell>
           </asp:TableRow>
       </asp:Table>
+      <br />
+      <asp:CheckBox ID="ChkSubscribe" runat="server" Text ="The APSIM Initiative will forward updates on APSIM-related developments and improvements as well as the upcoming APSIM-related events including training workshops." />
+      <br />
+      <br />
       <div>
           <asp:Button ID="YesButton" runat="server" Text="Yes I agree, begin download" onclick="YesButton_Click" Width="238px" />
           <asp:Button ID="NoButton" runat="server" Text="No I don't agree, go back" onclick="NoButton_Click" />

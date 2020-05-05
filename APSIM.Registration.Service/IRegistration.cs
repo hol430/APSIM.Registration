@@ -72,5 +72,23 @@ namespace APSIM.Registration.Service
         [WebGet(UriTemplate = "/IsRegistered?email={email}",
                 BodyStyle = WebMessageBodyStyle.WrappedRequest)]
         bool IsRegistered(string email);
+
+        /// <summary>
+        /// Subscribe to the mailing list.
+        /// </summary>
+        /// <param name="email">Email address.</param>
+        [OperationContract]
+        [WebGet(UriTemplate = "/Subscribe?email={email}",
+                                  BodyStyle = WebMessageBodyStyle.WrappedRequest)]
+        void Subscribe(string email);
+
+        /// <summary>
+        /// Unsubscribe to the mailing list.
+        /// </summary>
+        /// <param name="email">Email address.</param>
+        [OperationContract]
+        [WebGet(UriTemplate = "/Unsubscribe?email={email}",
+                                  BodyStyle = WebMessageBodyStyle.WrappedRequest)]
+        void Unsubscribe(string email);
     }
 }

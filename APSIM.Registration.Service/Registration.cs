@@ -170,6 +170,54 @@ ORDER BY [Date] DESC;";
             }
         }
 
+        /// <summary>
+        /// Subscribe to the mailing list.
+        /// </summary>
+        /// <param name="email">Email address.</param>
+        public void Subscribe(string email)
+        {
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                string sql = @"IF NOT EXISTS (SELECT *
+FROM Subscribers
+WHERE Email = @email)
+BEGIN
+	INSERT INTO Subscribers (Email, [Date])
+	VALUES (@email, @date)
+END";
+                using (SqlConnection connection = Open())
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.Add(new SqlParameter("@email", email));
+                        command.Parameters.Add(new SqlParameter("@date", DateTime.Now));
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Unsubscribe to the mailing list.
+        /// </summary>
+        /// <param name="email">Email address.</param>
+        public void Unsubscribe(string email)
+        {
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                string sql = @"DELETE FROM Subscribers WHERE Email = @email";
+                using (SqlConnection connection = Open())
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.Add(new SqlParameter("@email", email));
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+
         /// <summary>Return the valid password for this web service.</summary>
         private static string GetValidPassword()
         {

@@ -132,6 +132,24 @@ namespace ProductRegistration
             {
                 throw new Exception("Encountered an error while writing to DB.", error);
             }
+
+            // Subscribe if subscribe checkbox is checked.
+            if (ChkSubscribe.Checked)
+            {
+                url = $"https://apsimdev.apsim.info/APSIM.Registration.Service/Registration.svc/Subscribe?email={Email.Text}";
+                WriteToLogFile("Subscribing to mailing list. Request: " + url, MessageType.Info);
+                try
+                {
+                    WebUtilities.CallRESTService<object>(url);
+                    WriteToLogFile("Subscribed to mailing list", MessageType.Info);
+                }
+                catch (Exception err)
+                {
+                    // For now, don't let a failed subscription cause the entire process to fail.
+                    WriteToLogFile(err.ToString(), MessageType.Error);
+                    //throw new Exception("Encountered an error while subscribing to mailing list.", err);
+                }
+            }
         }
 
         private void SendInvoiceEmail()
