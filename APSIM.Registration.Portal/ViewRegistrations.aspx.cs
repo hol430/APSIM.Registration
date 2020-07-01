@@ -22,7 +22,7 @@ namespace ProductRegistration
 
             SqlDataSource1.ConnectionString = System.IO.File.ReadAllText(@"D:\Websites\dbConnect.txt") + ";Database=APSIM.Registration";
             System.Data.DataView dv = (DataView) SqlDataSource1.Select(new DataSourceSelectArguments());
-            DataTable Data = dv.ToTable(false, "Date", "Country", "Product");
+            DataTable Data = dv.ToTable(false, "Date", "Country", "Product", "Type");
             StringWriter writer = new StringWriter();
             DataTableUtilities.DataTableToText(Data, 0, ",", true, writer, excelFriendly: true);
 
