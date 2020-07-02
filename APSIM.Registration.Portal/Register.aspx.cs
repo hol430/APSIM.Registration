@@ -111,44 +111,52 @@ namespace ProductRegistration
         /// </summary>
         private void UpdateDB()
         {
-            string url = "https://apsimdev.apsim.info/APSIM.Registration.Service/Registration.svc/AddRegistration" +
-                            "?firstName=" + FirstName.Text +
-                            "&lastName=" + LastName.Text +
-                            "&organisation=" + Organisation.Text +
-                            "&country=" + Country.Text +
-                            "&email=" + Email.Text +
-                            "&product=" + GetRealProductName() +
-                            "&version=" + GetVersion() +
-                            "&platform=" + GetPlatform() +
-                            "&type=Registration";
-
-            WriteToLogFile("Updating DB. Request: " + url, MessageType.Info);
             try
             {
-                WebUtilities.CallRESTService<object>(url);
-                WriteToLogFile("DB updated successfully.", MessageType.Info);
-            }
-            catch (Exception error)
-            {
-                throw new Exception("Encountered an error while writing to DB.", error);
-            }
+                string url = "https://apsimdev.apsim.info/APSIM.Registration.Service/Registration.svc/AddRegistration" +
+                                "?firstName=" + FirstName.Text +
+                                "&lastName=" + LastName.Text +
+                                "&organisation=" + Organisation.Text +
+                                "&country=" + Country.Text +
+                                "&email=" + Email.Text +
+                                "&product=" + GetRealProductName() +
+                                "&version=" + GetVersion() +
+                                "&platform=" + GetPlatform() +
+                                "&type=Registration";
 
-            // Subscribe if subscribe checkbox is checked.
-            if (ChkSubscribe.Checked)
-            {
-                url = $"https://apsimdev.apsim.info/APSIM.Registration.Service/Registration.svc/Subscribe?email={Email.Text}";
-                WriteToLogFile("Subscribing to mailing list. Request: " + url, MessageType.Info);
+                WriteToLogFile("Updating DB. Request: " + url, MessageType.Info);
                 try
                 {
                     WebUtilities.CallRESTService<object>(url);
-                    WriteToLogFile("Subscribed to mailing list", MessageType.Info);
+                    WriteToLogFile("DB updated successfully.", MessageType.Info);
                 }
-                catch (Exception err)
+                catch (Exception error)
                 {
-                    // For now, don't let a failed subscription cause the entire process to fail.
-                    WriteToLogFile(err.ToString(), MessageType.Error);
-                    //throw new Exception("Encountered an error while subscribing to mailing list.", err);
+                    throw new Exception("Encountered an error while writing to DB.", error);
                 }
+
+                // Subscribe if subscribe checkbox is checked.
+                if (ChkSubscribe.Checked)
+                {
+                    url = $"https://apsimdev.apsim.info/APSIM.Registration.Service/Registration.svc/Subscribe?email={Email.Text}";
+                    WriteToLogFile("Subscribing to mailing list. Request: " + url, MessageType.Info);
+                    try
+                    {
+                        WebUtilities.CallRESTService<object>(url);
+                        WriteToLogFile("Subscribed to mailing list", MessageType.Info);
+                    }
+                    catch (Exception err)
+                    {
+                        // For now, don't let a failed subscription cause the entire process to fail.
+                        WriteToLogFile(err.ToString(), MessageType.Error);
+                        //throw new Exception("Encountered an error while subscribing to mailing list.", err);
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                // If something goes wrong then that's unfortunate but it shouldn't impact the user.
+                WriteToLogFile(err.ToString(), MessageType.Error);
             }
         }
 
