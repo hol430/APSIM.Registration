@@ -64,6 +64,21 @@ namespace APSIM.Registration.Service
         void AddRegistration(string firstName, string lastName, string organisation, string country, string email, string product, string version, string platform, string type);
 
         /// <summary>
+        /// Add a upgrade or registration into the database.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="organisation"></param>
+        /// <param name="country"></param>
+        /// <param name="email"></param>
+        /// <param name="product"></param>
+        [OperationContract]
+        [WebGet(UriTemplate = "/AddCommercialRegistration?firstName={firstName}&lastName={lastName}&organisation={organisation}" +
+                                  "&country={country}&email={email}&product={product}&version={version}&platform={platform}&type={type}&licensorName={licensorName}&licensorEmail={licensorEmail}&companyTurnover={companyTurnover}&companyRego={companyRego}&companyAddress={companyAddress}",
+                                  BodyStyle = WebMessageBodyStyle.WrappedRequest)]
+        void AddCommercialRegistration(string firstName, string lastName, string organisation, string country, string email, string product, string version, string platform, string type, string licensorName, string licensorEmail, string companyTurnover, string companyRego, string companyAddress);
+
+        /// <summary>
         /// Check if a user with a given email address has previously
         /// accepted the licence terms and conditions.
         /// </summary>
